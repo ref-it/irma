@@ -1,41 +1,43 @@
 <?php
 
-use app\components\Config;
-use yii\i18n\PhpMessageSource;
+use app\models\db\ServiceUser;
+use app\rbac\DbManager;
 use yii\log\FileTarget;
 use yii\swiftmailer\Mailer;
 use yii\caching\FileCache;
 
-if(file_exists(__DIR__ . '/secrets.php')){
-    $secrets = require  __DIR__ . '/secrets.php';
-}else{
-    $secrets = require  __DIR__ . '/secrets.sample.php';
-    touch(__DIR__ . '/INSTALLING_NOW');
+if(!file_exists(__DIR__ . '/secrets.php')){
+    die("config/secrets.php missing");
 }
-
-if(file_exists(__DIR__ . '/auth.php')) {
-    $authFile = require __DIR__ . '/auth.php';
-}else {
-    $authFile = require  __DIR__ . '/auth.sample.php';
-}
-
-if(file_exists(__DIR__ . '/INSTALLING_NOW')){
-    define('START_INSTALLER', true);
-}
+$secrets = include __DIR__ . "/secrets.php";
 
 $config = [
-    'id' => 'yii-app',
-    'name' => 'Yii App',
+    'id' => 'yii-membership-management',
+    'name' => 'Mitgliederverwaltung',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'language' => 'de-DE', // default changed by Config
+    'language' => 'de-DE',
 
     'aliases' => [
-        '@bower' => '@vendor/bower',
-        '@npm'   => '@vendor/npm',
+        '@bower' => '@vendor/bower-asset',
+        '@npm'   => '@vendor/npm-asset',
         '@locale'   => '@app/locale',
+        '@mail' => '@app/mail',
     ],
+
     'components' => [
+
+        'db' => [
+            'class' => \yii\db\Connection::class,
+            'dsn' => $secrets['db']['dsn'],
+            'username' => $secrets['db']['username'],
+            'password' => $secrets['db']['password'],
+            'charset' => 'utf8',
+            // Schema cache options (for production environment)
+            'enableSchemaCache' => true,
+            'schemaCacheDuration' => 60,
+            'schemaCache' => 'cache',
+        ],
 
         'request' => [
             'cookieValidationKey' => $secrets['cookieValidationKey'] ?? '',
@@ -47,8 +49,10 @@ $config = [
 
         'user' => [
             'class' => yii\web\User::class,
-            'identityClass' => \app\models\MixedUserIdentity::class,
-        ],
+            'identityClass' => ServiceUser::class,
+            'loginUrl' => ['auth/wayfinder'],
+            'enableAutoLogin' => true,
+         ],
 
         'errorHandler' => [
             'errorAction' => 'site/error'
@@ -59,7 +63,10 @@ $config = [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => YII_ENV_DEV,
+            'transport' => [
+                'class' => Swift_SmtpTransport::class,
+            ] + $secrets['mail'] ?? [],
         ],
 
         'log' => [
@@ -72,7 +79,27 @@ $config = [
             ],
         ],
 
-        'db' => $secrets['db'] ?? [],
+        'authServices' => [
+            'class' => \app\components\auth\AuthComponent::class,
+            'config' => [
+                'cas' => [
+                    'class' => \app\components\auth\CasService::class,
+                    'host' => $secrets['cas']['host'],
+                    'port' => $secrets['cas']['port'] ?? '443',
+                    'path' => $secrets['cas']['path'] ?? '/idp/profile/cas',
+                    'casVersion' => '3.0',
+                    // optional parameters
+                    'certfile' => $secrets['cas']['certfile'] ?? false, // , or path to a SSL cert, or false to ignore certs
+                    'debug' => $secrets['cas']['debug'] ?? false, // will add many logs into @runtime/logs/cas.log
+                ],
+            ],
+        ],
+
+        'authManager' => [
+            'class' => DbManager::class,
+            // uncomment if you want to cache RBAC items hierarchy
+            'cache' => 'cache',
+        ],
 
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -80,7 +107,7 @@ $config = [
             'enableStrictParsing' => false,
             'rules' => [
                 //enter routing rules here
-                'migrate/<action:\w*>' => 'migrate/catch-all',
+                //'migrate/<action:\w*>' => 'migrate/catch-all',
             ],
         ],
 
@@ -92,10 +119,6 @@ $config = [
             ],
         ],
 
-        'config' => [
-            'class' => Config::class,
-        ],
-
         'view' => [
             'class' => \daxslab\taggedview\View::class,
             // @see https://github.com/daxslab/yii2-taggedview
@@ -105,13 +128,13 @@ $config = [
         ],
 
     ],
+
+    'modules' => [
+
+    ],
+
     'params' => [],
 ];
-
-if($authFile['enable-ldap'] !== false){
-    $config['components']['ldapAuth'] = $authFile['ldap'];
-    $config['components']['ldapAuth']['class'] = \stmswitcher\Yii2LdapAuth\LdapAuth::class;
-}
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment

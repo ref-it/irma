@@ -4,16 +4,45 @@
 namespace app\controllers;
 
 
-use app\models\site\LoginForm;
+use app\models\db\ServiceUser;
+use Yii;
+use yii\filters\AccessControl;
+use yii\web\Controller;
 use yii\web\ErrorAction;
-use yii\web\Response;
+use yii\web\IdentityInterface;
 
-class SiteController extends \yii\web\Controller
+class SiteController extends Controller
 {
+
+    public function behaviors() : array
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => false,
+                        'actions' => ['profile'],
+                        'roles' => ['?'], // guests only
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['profile'],
+                        'roles' => ['@'], // logged in only
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => [],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function actions()
+    public function actions(): array
     {
         return [
             'error' => [
@@ -22,35 +51,16 @@ class SiteController extends \yii\web\Controller
         ];
     }
 
-    public function actionHome() : string {
-        return $this->render('home');
-    }
-
-    public function actionLogin()
+    public function actionHome() : string
     {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        $model->scenario = LoginForm::SCENARIO_LOGIN;
-        if ($model->load(\Yii::$app->request->post()) && $model->login()) {
-            return $this->goHome();
-        }
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionLogout() : Response {
-        \Yii::$app->user->logout();
-        return $this->goHome();
+        return $this->render('home');
     }
 
     public function actionProfile() : string
     {
-        return $this->render('profile', ['identity' => \Yii::$app->user->getIdentity()]);
+
+
+        return $this->render('profile', ['user' => Yii::$app->user->getIdentity()]);
     }
 
     public function actionImpressum(){
@@ -60,6 +70,4 @@ class SiteController extends \yii\web\Controller
     public function actionDatenschutz(){
         //TODO fillme
     }
-
-
 }

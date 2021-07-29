@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use app\widgets\Alert;
+use app\widgets\NavBar4;
 use yii\bootstrap4\NavBar;
 use yii\helpers\Html;
 use yii\bootstrap4\Nav;
@@ -28,7 +29,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrap">
-    <?= \app\widgets\NavBar4::widget() ?>
+    <?= NavBar4::widget() ?>
     <div class="container mt-4">
         <?= Breadcrumbs::widget([
             'links' => $this->params['breadcrumbs'] ?? [],

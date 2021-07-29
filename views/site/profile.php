@@ -3,19 +3,41 @@
 
 
 /* @var $this View */
-/* @var $identity MixedUserIdentity */
+/* @var $user ServiceUser */
 
-use app\models\MixedUserIdentity;
+use app\models\db\ServiceUser;
+use app\widgets\Card;
+use yii\bootstrap4\ActiveForm;
+use yii\bootstrap4\Html;
 use yii\web\View;
 
-
-var_dump($identity);
-
-echo \yii\bootstrap4\Html::ul([
-    $identity->getId(),
-    $identity->getUsername(),
-    // $identity->getMail(),
-    // $identity->getAvatarUrl()
+Card::begin([
+    'containerOptions' => ['class' => 'offset-lg-3 col-lg-6 mt-5'],
+    'cardOptions' => ['class' => 'border border-secondary'],
+    'headerOptions' => ['class' => 'bg-dark text-white'],
+    'header' => 'Benutzer:innenprofil',
 ]);
 
+$form = ActiveForm::begin([
+    'id' => 'profile-form',
+]);
+
+echo $form->field($user, 'email')->staticControl()->hint('');
+echo $form->field($user, 'username')->staticControl()->hint('');
+echo $form->field($user, 'name');
+echo $form->field($user, 'phone')->textInput(['placeholder' => '+49 ...']);
+echo $form->field($user, 'iban')->textInput(['placeholder' => 'DE...']);
+echo $form->field($user, 'adresse')->textarea([
+    'placeholder' => 'Musterstraße 5a' . PHP_EOL . '00000 Musterstadt',
+    'rows' => 2,
+    'style' => 'resize:none',
+]);
+echo $form->field($user, 'imageFile')->fileInput();
+
+echo Html::beginTag('div', ['class' => 'form-group']);
+echo Html::submitButton('Speichern', ['class' => 'btn btn-primary']);
+echo Html::endTag('div');
+
+ActiveForm::end();
+Card::end();
 

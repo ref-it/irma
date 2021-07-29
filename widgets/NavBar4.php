@@ -3,8 +3,7 @@
 
 namespace app\widgets;
 
-use app\models\MixedUserIdentity;
-use cetver\LanguageSelector\items\DropDownLanguageItem;
+use app\models\db\ServiceUser;
 use rmrevin\yii\fontawesome\FAS;
 use Yii;
 use yii\bootstrap4\Nav;
@@ -21,14 +20,6 @@ class NavBar4 extends \yii\bootstrap4\Widget
 {
     public function run()
     {
-        $lang = new DropDownLanguageItem([
-            'languages' => [
-                'en-US' => '<span class="flag-icon flag-icon-us"></span> English',
-                'de-DE' => '<span class="flag-icon flag-icon-de"></span> Deutsch',
-            ],
-            'options' => ['encode' => false],
-        ]);
-
         NavBar::begin([
             'brandLabel' => Yii::$app->name,
             'brandUrl' => Yii::$app->homeUrl,
@@ -39,31 +30,31 @@ class NavBar4 extends \yii\bootstrap4\Widget
             'renderInnerContainer' => false,
         ]);
 
-        $navItems = Yii::$app->config->app('topMenuStructure');
 
         /** @var User $user */
         $isLoggedIn = !Yii::$app->user->isGuest;
-        /** @var MixedUserIdentity $id */
+        /** @var ServiceUser $id */
         $id = Yii::$app->user->getIdentity();
-        $username = !is_null($id) ? $id->getUsername() : '';
+        $nameTag = $id->name ?? $id->username ?? '';
 
+        // align on the right side with ml-auto
         echo Nav::widget([
-            'options' => ['class' => 'navbar-nav mr-auto'],
-            'items' => $navItems,
-        ]);
-
-        // align on the right side
-        echo Nav::widget([
-            'options' => ['class' => 'navbar-nav'],
+            'options' => ['class' => 'navbar-nav ml-auto'],
             'items' => [
                 [
                     'label' => FAS::icon('sign-in-alt') . ' Login',
-                    'url' => ['site/login'],
+                    'url' => ['auth/wayfinder'],
                     'visible' => !$isLoggedIn,
-                    'encode' => false
+                    'encode' => false,
                 ],
                 [
-                    'label' => Html::img('/img/dummyPerson.svg', ['height' => 30, 'class' => 'pr-1']) . ' ' . $username . ' ',
+                    'label' => FAS::icon('user-plus') . ' Registrieren',
+                    'url' => ['auth/register'],
+                    'visible' => !$isLoggedIn,
+                    'encode' => false,
+                ],
+                [
+                    'label' => Html::img('/img/dummyPerson.svg', ['height' => 30, 'class' => 'pr-1']) . ' ' . $nameTag,
                     'visible' => $isLoggedIn,
                     'dropdownOptions' => ['class' => 'dropdown-menu-right'],
                     'encode' => false,
@@ -75,13 +66,11 @@ class NavBar4 extends \yii\bootstrap4\Widget
                         ],
                         [
                             'label' => FAS::icon('sign-out-alt') . ' ' . Yii::t('user', 'action_logout_label'),
-                            'url' => ['site/logout'],
+                            'url' => ['auth/logout'],
                             'encode' => false,
                         ],
                     ],
                 ],
-                $lang->toArray(),
-
             ],
         ]);
 
