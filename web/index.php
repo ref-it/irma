@@ -12,5 +12,5 @@ require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 $config = require __DIR__ . '/../config/web.php';
 
 $app = new Application($config);
-$app->defaultRoute = 'site/home';
+$app->defaultRoute = 'auth/register';
 $app->run();

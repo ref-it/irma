@@ -19,4 +19,12 @@ return [
         'certfile' => '', // default: ''  // empty string, or path to a SSL cert, or false to ignore certs
         'debug' => true, // default: false will add many logs into X/runtime/logs/cas.log
     ],
+
+    'mail' => [
+        'encryption' => 'tls',
+        'host' => 'your_mail_server_host',
+        'port' => 'your_smtp_port',
+        'username' => 'your_username',
+        'password' => 'your_password',
+    ]
 ];
