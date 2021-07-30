@@ -41,6 +41,8 @@ $config = [
 
         'request' => [
             'cookieValidationKey' => $secrets['cookieValidationKey'] ?? '',
+            'baseUrl' => '/management'
+
         ],
 
         'cache' => [
@@ -57,14 +59,16 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error'
         ],
-        
         'mailer' => [
             'class' => Mailer::class,
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
             'useFileTransport' => YII_ENV_DEV,
-            'transport' => [
+	    'messageConfig' => [
+		'from' => 'service@open-administration.de',
+            ],
+	    'transport' => [
                 'class' => Swift_SmtpTransport::class,
             ] + $secrets['mail'] ?? [],
         ],
@@ -126,7 +130,6 @@ $config = [
             //if they are not overwritten by the page itself
             //'image' => 'http://domain.com/images/default-image.jpg',
         ],
-
     ],
 
     'modules' => [
