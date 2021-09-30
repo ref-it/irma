@@ -54,8 +54,8 @@ class CasService extends AuthService
         $logger = new Logger('yii-auth-cas');
         $logger->pushHandler(new StreamHandler(Yii::getAlias(self::LOGPATH)));
 
-        phpCAS::client($this->casVersion, $this->host, (int) $this->port, $this->path);
         phpCAS::setLogger($logger);
+        phpCAS::client($this->casVersion, $this->host, (int) $this->port, $this->path);
 
         if (!empty($this->certfile)) {
             phpCAS::setCasServerCACert($this->certfile);

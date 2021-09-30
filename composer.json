@@ -32,7 +32,8 @@
         "yiisoft/yii2-faker": "~2.0.0",
         "codeception/codeception": "5.0.x-dev",
         "codeception/specify": "dev-master",
-        "codeception/verify": "dev-master"
+        "codeception/verify": "dev-master",
+        "insolita/yii2-migration-generator": "~3.1"
     },
     "scripts": {
         "post-install-cmd": [

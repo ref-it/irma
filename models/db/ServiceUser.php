@@ -170,4 +170,5 @@ class ServiceUser extends ActiveRecord implements IdentityInterface
             'username' => 'darf noch nicht bereits vergeben sein, muss mit einem Buchstaben beginnen und darf sonst nur Zahlen, Buchstaben oder Unterstriche enthalten',
         ];
     }
+
 }
