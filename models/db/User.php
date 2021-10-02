@@ -11,7 +11,7 @@ use yii\web\IdentityInterface;
  * This is the model class for table "users".
  *
  * @property int $id
- * @property string|null $name
+ * @property string|null $fullName
  * @property string|null $username
  * @property string|null $email
  * @property int|null $status
@@ -46,7 +46,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             self::SCENARIO_DEFAULT => [],
             self::SCENARIO_REGISTER => ['username', 'password', 'password_repeat', 'email', ],
-            self::SCENARIO_PROFILE => ['name', 'phone', 'iban', 'adresse'],
+            self::SCENARIO_PROFILE => ['fullName', 'phone', 'iban', 'adresse'],
         ];
     }
 
@@ -57,9 +57,9 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules(): array
     {
         return [
-            [['name', 'username', 'email', 'phone', 'iban', 'adresse'], 'trim'],
+            [['fullName', 'username', 'email', 'phone', 'iban', 'adresse'], 'trim'],
             [['status'], 'integer'],
-            [['name', 'email'], 'string', 'max' => 64],
+            [['fullName', 'email'], 'string', 'max' => 64],
             ['email', 'email'],
             ['email', MailDomainRegistrationValidator::class],
             ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],

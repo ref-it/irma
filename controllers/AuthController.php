@@ -159,7 +159,7 @@ class AuthController extends Controller
             $model->status = User::STAUTS_UNVERIVIED;
             $model->token = $security->generateRandomString();
             $model->authKey = $security->generateRandomString();
-            $model->name = ucwords(str_replace('.', ' ', explode('@', $model->email)[0]));
+            $model->fullName = ucwords(str_replace('.', ' ', explode('@', $model->email)[0]));
             $model->scenario = Model::SCENARIO_DEFAULT; // makes sure password comparison will not be triggered again
             $saved = $model->save();
 
