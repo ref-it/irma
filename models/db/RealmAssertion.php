@@ -28,9 +28,10 @@ class RealmAssertion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'string', 'max' => 80],
+            [['user_id'], 'integer'],
             [['realm_id'], 'string', 'max' => 32],
             [['realm_id'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['realm_id' => 'uid']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
