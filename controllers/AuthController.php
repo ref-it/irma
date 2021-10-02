@@ -123,7 +123,7 @@ class AuthController extends Controller
                     $realm = $dom->getBelongingRealm()->one();
                     $rAssert = new RealmAssertion();
                     $rAssert->realm_id = $realm->uid;
-                    $rAssert->user_id = 'cas/' . $user->username;
+                    $rAssert->user_id = $user->username;
                     $realmAsserted = $rAssert->save();
                     if($realmAsserted){
                         Yii::$app->getSession()->addFlash('success', 'Realm wurde hinzugefügt');
