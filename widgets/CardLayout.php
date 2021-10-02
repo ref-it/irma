@@ -5,6 +5,7 @@ namespace app\widgets;
 
 use yii\base\Widget;
 use yii\bootstrap4\Html;
+use yii\helpers\ArrayHelper;
 
 class CardLayout extends Widget
 {
@@ -20,10 +21,16 @@ class CardLayout extends Widget
 
     public function run() : string
     {
+        $user = \Yii::$app->getUser();
         $out = '';
         $out .= Html::beginTag('div', $this->containerOptions);
         foreach ($this->items as $item){
             $item_with_defaults = $item + $this->defaultCardConfig; // add defaults if missing
+            $role = ArrayHelper::remove($item_with_defaults, 'roles');
+            $roleParams = ArrayHelper::remove($item_with_defaults, 'roleParams', []);
+            if($role !== null && !$user->can($role, $roleParams)){
+                continue;
+            }
             $out .= Card::widget($item_with_defaults); // render sub card
         }
         $out .= Html::endTag('div');

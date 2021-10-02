@@ -2,8 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\db\Realm;
-use app\models\db\search\RealmSearch;
+use app\models\db\Domain;
+use app\models\db\search\DomainSearch;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -11,9 +11,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
- * RealmController implements the CRUD actions for Realms model.
+ * DomainController implements the CRUD actions for Domains model.
  */
-class RealmController extends Controller
+class DomainController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -22,7 +22,7 @@ class RealmController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::class,
+                'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -45,12 +45,12 @@ class RealmController extends Controller
     }
 
     /**
-     * Lists all Realms models.
+     * Lists all Domains models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new RealmSearch();
+        $searchModel = new DomainSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -60,8 +60,8 @@ class RealmController extends Controller
     }
 
     /**
-     * Displays a single Realms model.
-     * @param string $id
+     * Displays a single Domains model.
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -73,17 +73,16 @@ class RealmController extends Controller
     }
 
     /**
-     * Creates a new Realms model.
+     * Creates a new Domains model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Realm();
+        $model = new Domain();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $this->afterRealmCreation($model);
-            return $this->redirect(['view', 'id' => $model->uid]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -92,9 +91,9 @@ class RealmController extends Controller
     }
 
     /**
-     * Updates an existing Realms model.
+     * Updates an existing Domains model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -103,7 +102,7 @@ class RealmController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->uid]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -112,9 +111,9 @@ class RealmController extends Controller
     }
 
     /**
-     * Deletes an existing Realms model.
+     * Deletes an existing Domains model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -126,26 +125,18 @@ class RealmController extends Controller
     }
 
     /**
-     * Finds the Realms model based on its primary key value.
+     * Finds the Domains model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Realm the loaded model
+     * @param integer $id
+     * @return Domain the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Realm::findOne($id)) !== null) {
+        if (($model = Domain::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
-    }
-
-    private function afterRealmCreation(Realm $realm)
-    {
-        $auth = Yii::$app->authManager;
-        $rA = $auth->createRole($realm->uid . "-RealmAdmin");
-        $rA->description = "Admin of the Realm " . $realm->uid;
-        $auth->add($rA);
     }
 }

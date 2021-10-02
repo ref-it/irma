@@ -3,9 +3,9 @@
 
 
 /* @var $this View */
-/* @var $user ServiceUser */
+/* @var $user \app\models\db\User */
 
-use app\models\db\ServiceUser;
+use app\models\db\User;
 use app\widgets\Card;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
@@ -24,7 +24,7 @@ $form = ActiveForm::begin([
 
 echo $form->field($user, 'email')->staticControl()->hint('');
 echo $form->field($user, 'username')->staticControl()->hint('');
-echo $form->field($user, 'name');
+echo $form->field($user, 'fullName');
 echo $form->field($user, 'phone')->textInput(['placeholder' => '+49 ...']);
 echo $form->field($user, 'iban')->textInput(['placeholder' => 'DE...']);
 echo $form->field($user, 'adresse')->textarea([

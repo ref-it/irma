@@ -5,15 +5,16 @@ namespace app\controllers;
 
 
 use app\components\auth\AuthComponent;
-use app\models\db\ServiceUser;
+use app\models\db\Domain;
+use app\models\db\Realm;
+use app\models\db\RealmAssertion;
+use app\models\db\User;
 use Yii;
 use yii\base\Model;
 use yii\filters\AccessControl;
-use yii\filters\AccessRule;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\HttpException;
-use yii\web\IdentityInterface;
 use yii\web\Response;
 
 class AuthController extends Controller
@@ -43,8 +44,9 @@ class AuthController extends Controller
 
     /**
      * @throws HttpException
+     * @return Response | string
      */
-    public function actionLogin(string $service) : string
+    public function actionLogin(string $service)
     {
         Yii::info("start login action");
 
@@ -57,15 +59,14 @@ class AuthController extends Controller
         $username = $auth->getUsername();
         Yii::debug($username);
         if ($username) {
-            $userClass = Yii::$app->user->identityClass;
-            $user = $userClass::findIdentityByUsername($username, $service);
+            $user = (Yii::$app->user->identityClass)::findIdentityByUsername($username);
             Yii::debug($user);
             if ($user) {
                 $loginSuccess = Yii::$app->user->login($user);
                 if($loginSuccess) {
                     Yii::$app->getSession()->set('auth-service', $service); // remember which service was used for auth
-                    //return $this->redirect(['site/home']);
-                    return $this->render('debug', ['auth' => $username]);
+                    return $this->redirect(['site/home']);
+                    //return $this->render('debug', ['auth' => $username]);
                 }
                 throw new HttpException(403, 'Login gescheitert');
             } else {
@@ -106,17 +107,34 @@ class AuthController extends Controller
 
     public function actionConfirm(string $token) : string
     {
-        $users = ServiceUser::findAll(['token' => $token]);
-        if(count($users) === 1 && $users[0]->status === ServiceUser::STAUTS_UNVERIVIED){
-            $users[0]->status = ServiceUser::STAUTS_VERIVIED;
-            $users[0]->token = null;
+        $users = User::findAll(['token' => $token]);
+        if(count($users) === 1 && $users[0]->status === User::STAUTS_UNVERIVIED){
+            $user = $users[0];
+            $user->status = User::STAUTS_VERIVIED;
+            $user->token = null;
             $success = $users[0]->save();
             if ($success) {
                 Yii::$app->getSession()->addFlash('success', 'Account wurde aktiviert');
+                // get fitting Domain
+                [,$domGiven] = explode('@', $user->email);
+                $dom = Domain::findOne(['name' => $domGiven, 'forRegistration' => 1]);
+                if($dom !== null){
+                    /** @var $realm Realm */
+                    $realm = $dom->getBelongingRealm()->one();
+                    $rAssert = new RealmAssertion();
+                    $rAssert->realm_id = $realm->uid;
+                    $rAssert->user_id = 'cas/' . $user->username;
+                    $realmAsserted = $rAssert->save();
+                    if($realmAsserted){
+                        Yii::$app->getSession()->addFlash('success', 'Realm wurde hinzugefügt');
+                    }else{
+                        Yii::$app->getSession()->addFlash('error', 'Realm wurde NICHT hinzugefügt. Bitte melde dich bei einem Admin');
+                    }
+                }
             } else {
                 Yii::$app->getSession()->addFlash('error', 'Ein Datenbank Fehler ist aufgetreten');
             }
-        } else if (count($users) === 1) {
+        } else if (count($users) === 1 && $users[0]->status !== User::STAUTS_UNVERIVIED) {
             Yii::$app->getSession()->addFlash('info', 'Account wurde bereits aktiviert');
         } else {
             Yii::$app->getSession()->addFlash('error', 'Der Account kann nicht gefunden werden');
@@ -131,20 +149,20 @@ class AuthController extends Controller
             return $this->goHome();
         }
 
-        $model = new ServiceUser();
-        $model->scenario = ServiceUser::SCENARIO_REGISTER;
+        $model = new User();
+        $model->scenario = User::SCENARIO_REGISTER;
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $security = Yii::$app->security;
             $pw = $model->password;
             $hash = $security->generatePasswordHash($pw);
             $model->password = $hash;
-            $model->status = ServiceUser::STAUTS_UNVERIVIED;
-            $model->authSource = 'cas';
+            $model->status = User::STAUTS_UNVERIVIED;
             $model->token = $security->generateRandomString();
             $model->authKey = $security->generateRandomString();
             $model->name = ucwords(str_replace('.', ' ', explode('@', $model->email)[0]));
             $model->scenario = Model::SCENARIO_DEFAULT; // makes sure password comparison will not be triggered again
             $saved = $model->save();
+
             // send mail if saved
             $mailResult = $saved && Yii::$app->getMailer()
                     ->compose('@mail/registration-confirmation', [
@@ -160,18 +178,17 @@ class AuthController extends Controller
                     'success',
                     'Die Bestätigungsmail wurde versendet. Bitte bestätige deine Mailadresse, vorher ist ein Login nicht möglich.'
                 );
-                $model = new ServiceUser(); // removes old entries from form
-                $model->scenario = ServiceUser::SCENARIO_REGISTER;
+                $model = new User(); // removes old entries from form
+                $model->scenario = User::SCENARIO_REGISTER;
             } else {
                 Yii::$app->getSession()->addFlash(
                     'error',
                     'Die Bestätigungsmail konnte nicht versand werden. Registration fehlgeschlagen.'
                 );
-                $model->scenario = ServiceUser::SCENARIO_REGISTER;
+                $model->scenario = User::SCENARIO_REGISTER;
                 $model->password = $pw;
             }
         }
-
         return $this->render('register', ['model' => $model]);
     }
 }

@@ -3,7 +3,7 @@
 /* @var $this View */
 /* @var $model LoginForm */
 
-use app\models\site\LoginForm;
+use app\models\db\site\LoginForm;
 use app\widgets\Card;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;

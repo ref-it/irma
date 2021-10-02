@@ -4,12 +4,11 @@
 namespace app\controllers;
 
 
-use app\models\db\ServiceUser;
+use app\models\db\RealmAdmin;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\ErrorAction;
-use yii\web\IdentityInterface;
 
 class SiteController extends Controller
 {
@@ -32,7 +31,7 @@ class SiteController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => [],
+                        'actions' => [], // rest: ok
                     ],
                 ],
             ],
@@ -51,15 +50,27 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionHome() : string
+    public function actionHome()
     {
-        return $this->render('home');
+        if(Yii::$app->getUser()->isGuest){
+            return $this->redirect(['auth/register']);
+        }
+
+        $adminRealms = RealmAdmin::find()
+            ->select('realm_id')
+            ->where(['user_id' => Yii::$app->user->getId()])
+            ->column();
+
+        if(count($adminRealms) > 0){
+            return $this->render('home', [ 'adminRealms' => $adminRealms]);
+        }else{
+            return $this->redirect(['site/profile']);
+        }
+
     }
 
     public function actionProfile() : string
     {
-
-
         return $this->render('profile', ['user' => Yii::$app->user->getIdentity()]);
     }
 

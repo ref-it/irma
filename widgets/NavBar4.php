@@ -3,7 +3,6 @@
 
 namespace app\widgets;
 
-use app\models\db\ServiceUser;
 use rmrevin\yii\fontawesome\FAS;
 use Yii;
 use yii\bootstrap4\Nav;
@@ -33,9 +32,9 @@ class NavBar4 extends \yii\bootstrap4\Widget
 
         /** @var User $user */
         $isLoggedIn = !Yii::$app->user->isGuest;
-        /** @var ServiceUser $id */
+        /** @var User $id */
         $id = Yii::$app->user->getIdentity();
-        $nameTag = $id->name ?? $id->username ?? '';
+        $nameTag = $id->fullName ?? $id->username ?? 'Anonymous?!';
 
         // align on the right side with ml-auto
         echo Nav::widget([
@@ -54,7 +53,7 @@ class NavBar4 extends \yii\bootstrap4\Widget
                     'encode' => false,
                 ],
                 [
-                    'label' => Html::img('/img/dummyPerson.svg', ['height' => 30, 'class' => 'pr-1']) . ' ' . $nameTag,
+                    'label' => Html::img(Yii::$app->request->baseUrl . '/img/dummyPerson.svg', ['height' => 30, 'class' => 'pr-1']) . ' ' . $nameTag,
                     'visible' => $isLoggedIn,
                     'dropdownOptions' => ['class' => 'dropdown-menu-right'],
                     'encode' => false,

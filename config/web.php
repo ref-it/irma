@@ -1,10 +1,10 @@
 <?php
 
-use app\models\db\ServiceUser;
-use app\rbac\DbManager;
-use yii\log\FileTarget;
-use yii\swiftmailer\Mailer;
+use app\models\db\User;
 use yii\caching\FileCache;
+use yii\log\FileTarget;
+use yii\rbac\DbManager;
+use yii\swiftmailer\Mailer;
 
 if(!file_exists(__DIR__ . '/secrets.php')){
     die("config/secrets.php missing");
@@ -51,7 +51,7 @@ $config = [
 
         'user' => [
             'class' => yii\web\User::class,
-            'identityClass' => ServiceUser::class,
+            'identityClass' => User::class,
             'loginUrl' => ['auth/wayfinder'],
             'enableAutoLogin' => true,
          ],

@@ -1,9 +1,9 @@
 <?php
 
-use app\rbac\DbManager;
 use yii\log\FileTarget;
 use yii\caching\FileCache;
 use yii\gii\Module;
+use yii\rbac\DbManager;
 
 if(!file_exists(__DIR__ . '/secrets.php')){
     die("config/secrets.php missing");

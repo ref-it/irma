@@ -2,12 +2,9 @@
 
 namespace app\models\db;
 
-use app\models\validators\MailDomainValidator;
+use app\models\validators\MailDomainRegistrationValidator;
 use Yii;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
-use yii\helpers\StringHelper;
-use yii\validators\InlineValidator;
 use yii\web\IdentityInterface;
 
 /**
@@ -18,7 +15,6 @@ use yii\web\IdentityInterface;
  * @property string|null $username
  * @property string|null $email
  * @property int|null $status
- * @property string|null $authSource
  * @property string|null $password
  * @property string|null $phone
  * @property string|null $iban
@@ -31,7 +27,7 @@ use yii\web\IdentityInterface;
  * @property string $token [varchar(64)]
  * @property string $profilePic [varchar(32)]
  */
-class ServiceUser extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
 
     public const STAUTS_UNVERIVIED = 0;
@@ -65,14 +61,13 @@ class ServiceUser extends ActiveRecord implements IdentityInterface
             [['status'], 'integer'],
             [['name', 'email'], 'string', 'max' => 64],
             ['email', 'email'],
-            ['email', MailDomainValidator::class],
+            ['email', MailDomainRegistrationValidator::class],
             ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],
             [['username', 'phone'], 'string', 'max' => 32, 'min' => 2],
-            [['authSource'], 'string', 'max' => 16],
             [['iban'], 'string', 'max' => 50],
             [['adresse'], 'string', 'max' => 256],
-            [['username', 'authSource'], 'unique',
-                'targetAttribute' => ['username', 'authSource'],
+            [['username',], 'unique',
+                'targetAttribute' => ['username'],
                 'message' => 'Der Nutzer:innenname wird bereits verwendet',
             ],
             [['password', 'password_repeat'], 'string', 'max' => 128, 'min' => 10, 'on' => self::SCENARIO_REGISTER],
@@ -96,17 +91,11 @@ class ServiceUser extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id) : ?self
     {
-        Yii::debug('SEARCH IDENTITY: ' . $id);
         if(is_numeric($id)){
             return self::findOne(['id' => $id]);
+        }else{
+            return self::findOne(['username' => $id]);
         }
-        if(strpos($id, '/') !== false){
-            [$service, $username] = StringHelper::explode($id, '/');
-            if (isset($service,$username)){
-                return self::findIdentityByUsername($username, $service);
-            }
-        }
-        return null;
     }
 
     /**
@@ -119,10 +108,10 @@ class ServiceUser extends ActiveRecord implements IdentityInterface
     }
 
 
-    public static function findIdentityByUsername(string $username, string $service) : ?self
+    public static function findIdentityByUsername(string $username) : ?self
     {
-        Yii::debug('SEARCH USERNAME: ' . $username . '@' . $service);
-        return self::findOne(['username' => $username, 'authSource' => $service]);
+        Yii::debug('SEARCH USERNAME: ' . $username);
+        return self::findOne(['username' => $username]);
     }
 
     /**
@@ -130,7 +119,7 @@ class ServiceUser extends ActiveRecord implements IdentityInterface
      */
     public function getId()
     {
-        return $this->authSource . '/' . $this->username;
+        return $this->id;
     }
 
 

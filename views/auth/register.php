@@ -3,10 +3,10 @@
 
 
 /* @var $this View */
-/* @var $model ServiceUser */
+/* @var $model \app\models\db\User */
 
 
-use app\models\db\ServiceUser;
+use app\models\db\User;
 use app\widgets\Card;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
