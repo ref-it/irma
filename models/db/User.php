@@ -61,7 +61,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['status'], 'integer'],
             [['fullName', 'email'], 'string', 'max' => 64],
             ['email', 'email'],
-            ['email', MailDomainRegistrationValidator::class],
+            //['email', MailDomainRegistrationValidator::class],
             ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],
             [['username', 'phone'], 'string', 'max' => 32, 'min' => 2],
             [['iban'], 'string', 'max' => 50],
@@ -155,7 +155,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeHints(): array
     {
         return [
-            'email' => 'Bitte verwende deine Uni-Mail Adresse',
+            //'email' => 'Bitte verwende deine Uni-Mail Adresse',
             'username' => 'darf noch nicht bereits vergeben sein, muss mit einem Buchstaben beginnen und darf sonst nur Zahlen, Buchstaben oder Unterstriche enthalten',
         ];
     }

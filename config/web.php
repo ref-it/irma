@@ -42,7 +42,6 @@ $config = [
         'request' => [
             'cookieValidationKey' => $secrets['cookieValidationKey'] ?? '',
             'baseUrl' => '/management'
-
         ],
 
         'cache' => [
