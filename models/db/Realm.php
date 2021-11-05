@@ -26,6 +26,7 @@ class Realm extends \yii\db\ActiveRecord
         return 'realm';
     }
 
+
     /**
      * {@inheritdoc}
      */

@@ -17,6 +17,7 @@ use yii\db\ActiveRecord;
 
 class Domain extends ActiveRecord
 {
+
     /**
      * {@inheritdoc}
      */
@@ -54,7 +55,7 @@ class Domain extends ActiveRecord
     }
 
     /**
-     * Gets query for [[BelongingRealm0]].
+     * Gets query for [[BelongingRealm]].
      *
      * @return \yii\db\ActiveQuery
      */

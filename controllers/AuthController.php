@@ -119,10 +119,10 @@ class AuthController extends Controller
                 [,$domGiven] = explode('@', $user->email);
                 $dom = Domain::findOne(['name' => $domGiven, 'forRegistration' => 1]);
                 if($dom !== null){
-                    /** @var $realm Realm */
-                    $realm = $dom->getBelongingRealm()->one();
+                    /** @var Realm $realm */
+                    $realmUid = $dom->belongingRealm;
                     $rAssert = new RealmAssertion();
-                    $rAssert->realm_id = $realm->uid;
+                    $rAssert->realm_id = $realmUid;
                     $rAssert->user_id = $user->id;
                     $realmAsserted = $rAssert->save();
                     if($realmAsserted){

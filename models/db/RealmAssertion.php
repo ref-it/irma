@@ -3,6 +3,7 @@
 namespace app\models\db;
 
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "realm_assertions".
@@ -10,14 +11,15 @@ use yii\db\ActiveQuery;
  * @property string|null $user_id
  * @property string|null $realm_id
  *
- * @property Realm $realm
+ * @property-read User $user
+ * @property-read Realm $realm
  */
-class RealmAssertion extends \yii\db\ActiveRecord
+class RealmAssertion extends ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'realm_assertion';
     }
@@ -25,20 +27,20 @@ class RealmAssertion extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['user_id'], 'integer'],
             [['realm_id'], 'string', 'max' => 32],
             [['realm_id'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['realm_id' => 'uid']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'user_id' => 'User ID',
@@ -49,13 +51,16 @@ class RealmAssertion extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Realm]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getRealm()
+    public function getRealm(): ActiveQuery
     {
         return $this->hasOne(Realm::class, ['uid' => 'realm_id']);
     }
 
+    /**
+     * @return ActiveQuery
+     */
     public function getUser() : ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
