@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\db\Gremium */
 
-$this->title = Yii::t('app', 'Create Gremien');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Gremiens'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Erstelle Gremium');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Gremien'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gremien-create">

@@ -1,5 +1,8 @@
 <?php
 
+use rmrevin\yii\fontawesome\FAS;
+use yii\grid\ActionColumn;
+use yii\grid\SerialColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
@@ -7,7 +10,7 @@ use yii\helpers\Html;
 /* @var $searchModel \app\models\db\search\GremiumSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Gremiens');
+$this->title = Yii::t('app', 'Gremien Auswahl');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gremien-index">
@@ -15,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Gremien'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(FAS::icon('plus') . ' ' . Yii::t('app', 'Erstelle Gremium'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -24,14 +27,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
+            ['class' => SerialColumn::class],
             'name',
             'belongingRealm',
             'parentGremium',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => ActionColumn::class],
         ],
     ]); ?>
 

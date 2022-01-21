@@ -5,10 +5,12 @@ namespace app\controllers;
 use app\models\db\Gremium;
 use app\models\db\search\GremiumSearch;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * GremienController implements the CRUD actions for Gremien model.
@@ -27,7 +29,7 @@ class GremienController extends Controller
                     [
                         'allow' => true,
                         'actions' => [],
-                        'roles' => ['realm-crud'],
+                        //FIXME 'roles' => ['realm-crud'],
                     ],
                     [
                         'allow' => false,
@@ -61,30 +63,35 @@ class GremienController extends Controller
 
     /**
      * Displays a single Gremien model.
-     * @param integer $id
+     * @param integer $id db identifier
+     * @param string $tab tab identifier
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView(int $id, string $tab = 'roles') : string
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        return match($tab){
+            'meta' => $this->render('view-meta', [
+                'model' => $this->findModel($id),
+            ]),
+            'roles' => $this->render('view-roles', [
+                'model' => $this->findModel($id),
+            ])
+        };
     }
 
     /**
      * Creates a new Gremien model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return Response|string
      */
-    public function actionCreate()
+    public function actionCreate() : Response|string
     {
         $model = new Gremium();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -94,10 +101,10 @@ class GremienController extends Controller
      * Updates an existing Gremien model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return Response|string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id) : Response|string
     {
         $model = $this->findModel($id);
 
@@ -114,10 +121,10 @@ class GremienController extends Controller
      * Deletes an existing Gremien model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return Response
+     * @throws NotFoundHttpException|StaleObjectException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id) : Response
     {
         $this->findModel($id)->delete();
 
@@ -131,7 +138,7 @@ class GremienController extends Controller
      * @return Gremium the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id) : Gremium
     {
         if (($model = Gremium::findOne($id)) !== null) {
             return $model;

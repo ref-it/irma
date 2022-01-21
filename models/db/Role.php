@@ -2,6 +2,8 @@
 
 namespace app\models\db;
 
+use yii\db\ActiveQuery;
+
 /**
  * This is the model class for table "roles".
  *
@@ -9,10 +11,11 @@ namespace app\models\db;
  * @property string|null $name
  * @property int $belongingGremium
  *
- * @property Gremium $belongingGremium0
+ * @property User[] $assertedUsers
  */
 class Role extends \yii\db\ActiveRecord
 {
+
     /**
      * {@inheritdoc}
      */
@@ -31,14 +34,14 @@ class Role extends \yii\db\ActiveRecord
             [['id', 'belongingGremium'], 'integer'],
             [['name'], 'string', 'max' => 64],
             [['id'], 'unique'],
-            [['belongingGremium'], 'exist', 'skipOnError' => true, 'targetClass' => Gremium::className(), 'targetAttribute' => ['belongingGremium' => 'id']],
+            [['belongingGremium'], 'exist', 'skipOnError' => true, 'targetClass' => Gremium::class, 'targetAttribute' => ['belongingGremium' => 'id']],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels() : array
     {
         return [
             'id' => 'ID',
@@ -50,10 +53,20 @@ class Role extends \yii\db\ActiveRecord
     /**
      * Gets query for [[BelongingGremium0]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getBelongingGremium0()
+    public function getBelongingGremium() : ActiveQuery
     {
-        return $this->hasOne(Gremium::className(), ['id' => 'belongingGremium']);
+        return $this->hasOne(Gremium::class, ['id' => 'belongingGremium']);
+    }
+
+    public function getRoleAssertions() : ActiveQuery
+    {
+        return $this->hasOne(RoleAssertion::class, ['role_id' => 'id']);
+    }
+
+    public function getAssertedUsers() : ActiveQuery
+    {
+        return $this->hasMany(User::class, ['id' => 'user_id'])->via('roleAssertions');
     }
 }
