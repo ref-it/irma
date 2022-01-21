@@ -4,6 +4,7 @@ namespace app\models\db;
 
 use app\models\validators\MailDomainRegistrationValidator;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -26,6 +27,8 @@ use yii\web\IdentityInterface;
  * @property string $organizationIds
  * @property string $token [varchar(64)]
  * @property string $profilePic [varchar(32)]
+ * @property-read Realm[] $adminRealms
+ * @property-read Realm[] $realms
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -39,6 +42,9 @@ class User extends ActiveRecord implements IdentityInterface
 
     public $password_repeat;
     public $imageFile;
+    /**
+     * @var mixed|null
+     */
 
     public function scenarios(): array
     {
@@ -145,6 +151,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'email' => 'E-Mail Adresse',
             'username' => 'Nutzer:innenname',
+            'fullName' => 'Vollständiger Name',
             'password' => 'Passwort',
             'password_repeat' => 'Passwort wiederholen',
             'iban' => 'IBAN',
@@ -158,6 +165,96 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => 'Bitte verwende deine Uni-Mail Adresse',
             'username' => 'darf noch nicht bereits vergeben sein, muss mit einem Buchstaben beginnen und darf sonst nur Zahlen, Buchstaben oder Unterstriche enthalten',
         ];
+    }
+
+    /**
+     * Gets query for [[GroupAssertions]].
+     *
+     * @return ActiveQuery
+     */
+    public function getGroupAssertions()
+    {
+        return $this->hasMany(GroupAssertion::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Groups]].
+     *
+     * @return ActiveQuery
+     */
+    public function getGroups()
+    {
+        return $this->hasMany(Group::class, ['id' => 'group_id'])->viaTable('group_assertion', ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[RealmAdmins]].
+     *
+     * @return ActiveQuery
+     */
+    public function getRealmAdmins()
+    {
+        return $this->hasMany(RealmAdmin::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Realms]] where User is Admin.
+     *
+     * @return ActiveQuery
+     */
+    public function getAdminRealms() : ActiveQuery
+    {
+        return $this->hasMany(Realm::class, ['uid' => 'realm_id'])->viaTable('realm_admin', ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[RealmAssertions]].
+     *
+     * @return ActiveQuery
+     */
+    public function getRealmAssertions() : ActiveQuery
+    {
+        return $this->hasMany(RealmAssertion::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for asserted [[Realms]].
+     *
+     * @return ActiveQuery
+     */
+    public function getRealms() : ActiveQuery
+    {
+        return $this->hasMany(Realm::class, ['uid' => 'realm_id'])->viaTable('realm_assertion', ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[RoleAssertions]].
+     *
+     * @return ActiveQuery
+     */
+    public function getActiveRoleAssertions() : ActiveQuery
+    {
+        return $this->hasMany(RoleAssertion::class, ['user_id' => 'id'])->where(['role_assertion.from <= NOW()']);
+    }
+
+    /**
+     * Gets query for [[RoleAssertions]].
+     *
+     * @return ActiveQuery
+     */
+    public function getAllRoleAssertions() : ActiveQuery
+    {
+        return $this->hasMany(RoleAssertion::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Roles]].
+     *
+     * @return ActiveQuery
+     */
+    public function getRoles() : ActiveQuery
+    {
+        return $this->hasMany(Role::class, ['id' => 'role_id'])->viaTable('role_assertion', ['user_id' => 'id']);
     }
 
 }

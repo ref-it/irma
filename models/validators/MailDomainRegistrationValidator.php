@@ -7,9 +7,10 @@ namespace app\models\validators;
 use app\models\db\Domain;
 use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
+use yii\validators\EmailValidator;
 use yii\validators\Validator;
 
-class MailDomainRegistrationValidator extends Validator
+class MailDomainRegistrationValidator extends EmailValidator
 {
     /**
      * @var string[]
@@ -43,10 +44,22 @@ class MailDomainRegistrationValidator extends Validator
      */
     public function validateValue($value) : array
     {
-        [,$domain] = StringHelper::explode($value, '@');
-        $valid = ArrayHelper::isIn($domain, $this->validDomainsForRegistration);
-        if(!$valid){
-            return [$this->message, []];
+        if(is_array($value)){
+            $ret = [];
+            foreach ($value as $v){
+                $ret[] = $this->validate($v);
+            }
+            return $ret;
+        }
+        $validEmail = parent::validateValue($value);
+        if(!empty($validEmail)){
+            return ['{value} ist keine gültige Email Adresse', []];
+        }
+
+        $split = StringHelper::explode($value, '@');
+        [,$domain] = $split;
+        if(!ArrayHelper::isIn($domain, $this->validDomainsForRegistration)){
+            return ['Die Domain "@{domain}" is nicht freigeschaltet, bitte verwende eine andere Mail-Adresse', ['domain' => $domain]];
         }
         return [];
     }
