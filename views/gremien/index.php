@@ -1,10 +1,12 @@
 <?php
 
+use app\models\db\Realm;
 use app\models\db\search\GremiumSearch;
 use rmrevin\yii\fontawesome\FAS;
 use yii\grid\ActionColumn;
 use yii\grid\SerialColumn;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -28,9 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            //['class' => SerialColumn::class],
             'name',
-            'realm_uid',
+            [
+                'attribute' => 'realm_uid',
+                'filter' => ArrayHelper::map(Realm::find()->asArray()->all(), 'uid', 'long_name'),
+                'filterInputOptions' => ['prompt' => 'Alle Realms', 'class' => 'form-control', 'id' => null]
+            ],
             'parent_gremium_id',
 
             ['class' => ActionColumn::class],

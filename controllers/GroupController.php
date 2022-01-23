@@ -27,7 +27,7 @@ class GroupController extends Controller
                     [
                         'allow' => true,
                         'actions' => [],
-                        'roles' => ['realm-crud'],
+                        //'roles' => ['realm-crud'],
                     ],
                     [
                         'allow' => false,

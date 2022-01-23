@@ -1,15 +1,18 @@
 <?php
 
+use app\models\db\Realm;
+use app\models\db\search\GroupSearch;
+use rmrevin\yii\fontawesome\FAS;
 use yii\grid\ActionColumn;
-use yii\grid\SerialColumn;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $searchModel \app\models\db\search\GroupSearch */
+/* @var $searchModel GroupSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Groups');
+$this->title = Yii::t('app', 'Gruppen');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="groups-index">
@@ -17,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Groups'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(FAS::icon('plus') . ' ' . Yii::t('app', 'Gruppe erstellen'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -26,11 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => SerialColumn::class],
 
-            'id',
             'name',
-            'realm_uid',
+            [
+                'attribute' => 'realm_uid',
+                'filter' => ArrayHelper::map(Realm::find()->asArray()->all(), 'uid', 'long_name'),
+                'filterInputOptions' => ['prompt' => 'Alle Realms', 'class' => 'form-control', 'id' => null]
+            ],
 
             ['class' => ActionColumn::class],
         ],

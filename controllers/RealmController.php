@@ -18,7 +18,7 @@ class RealmController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors() : array
     {
         return [
             'verbs' => [
@@ -33,7 +33,7 @@ class RealmController extends Controller
                     [
                         'allow' => true,
                         'actions' => [],
-                        'roles' => ['realm-crud'],
+                        //'roles' => ['realm-crud'],
                     ],
                     [
                         'allow' => false,

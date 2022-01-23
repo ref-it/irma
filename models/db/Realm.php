@@ -3,6 +3,7 @@
 namespace app\models\db;
 
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "realm".
@@ -10,13 +11,13 @@ use yii\db\ActiveQuery;
  * @property string|null $uid
  * @property string|null $long_name
  *
- * @property Domain[] $domains
- * @property Gremium[] $gremien
- * @property-read ActiveQuery $assertedUsers
- * @property-read ActiveQuery $realmAssertions
- * @property Group[] $groups
+ * @property-read Domain[] $domains
+ * @property-read Gremium[] $gremien
+ * @property-read User[] $assertedUsers
+ * @property-read RealmAssertion $realmAssertions
+ * @property-read Group[] $groups
  */
-class Realm extends \yii\db\ActiveRecord
+class Realm extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -42,10 +43,10 @@ class Realm extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels() : array
     {
         return [
-            'uid' => 'Identifier',
+            'uid' => 'Kurzname',
             'long_name' => 'Vollständiger Name',
         ];
     }
@@ -55,7 +56,7 @@ class Realm extends \yii\db\ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getDomains()
+    public function getDomains() : ActiveQuery
     {
         return $this->hasMany(Domain::class, ['realmUid' => 'uid']);
     }

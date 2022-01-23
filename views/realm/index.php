@@ -1,5 +1,8 @@
 <?php
 
+use yii\grid\ActionColumn;
+use yii\grid\SerialColumn;
+use rmrevin\yii\fontawesome\FAS;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
@@ -15,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Realms'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(FAS::icon('plus') . ' ' . Yii::t('app', 'Erstelle Realm'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -24,12 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
             'uid',
             'long_name',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => ActionColumn::class],
         ],
     ]); ?>
 

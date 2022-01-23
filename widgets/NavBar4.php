@@ -4,6 +4,7 @@
 namespace app\widgets;
 
 use app\models\db\User;
+use rmrevin\yii\fontawesome\FAR;
 use rmrevin\yii\fontawesome\FAS;
 use Yii;
 use yii\bootstrap4\Nav;
@@ -39,6 +40,12 @@ class NavBar4 extends \yii\bootstrap4\Widget
             'options' => ['class' => 'navbar-nav mr-auto'],
             'items' => [
                 [
+                    'label' => FAS::icon('globe') . ' Realms',
+                    'url' => ['realm/'],
+                    'visible' => $isLoggedIn,
+                    'encode' => false,
+                ],
+                [
                     'label' => FAS::icon('sitemap') . ' Gremien',
                     'url' => ['gremien/'],
                     'visible' => $isLoggedIn,
@@ -47,6 +54,18 @@ class NavBar4 extends \yii\bootstrap4\Widget
                 [
                     'label' => FAS::icon('users') . ' Personen',
                     'url' => ['user/'],
+                    'visible' => $isLoggedIn,
+                    'encode' => false,
+                ],
+                [
+                    'label' => FAS::icon('circle-notch') . ' Gruppen',
+                    'url' => ['group/'],
+                    'visible' => $isLoggedIn,
+                    'encode' => false,
+                ],
+                [
+                    'label' => FAS::icon('satellite-dish') . ' Domains',
+                    'url' => ['domain/'],
                     'visible' => $isLoggedIn,
                     'encode' => false,
                 ],
@@ -75,7 +94,6 @@ class NavBar4 extends \yii\bootstrap4\Widget
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav ml-auto'],
             'items' => [
-
                 [
                     'label' => FAS::icon('sign-in-alt') . ' Login',
                     'url' => ['auth/wayfinder'],

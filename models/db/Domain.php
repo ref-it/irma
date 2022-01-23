@@ -37,7 +37,7 @@ class Domain extends ActiveRecord
             [['name'], 'string', 'max' => 128],
             [['name'], 'unique'],
             [['activeMail', 'forRegistration'], 'boolean'],
-            [['realm_uid'], 'string', 'max' => 32],
+            [['realm_uid'], 'string', 'max' => 32, 'min' => 1],
             [['realm_uid'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['realm_uid' => 'uid']],
             [['forRegistration'], 'boolean'],
         ];
@@ -49,10 +49,11 @@ class Domain extends ActiveRecord
     public function attributeLabels(): array
     {
         return [
+            'id' => 'ID',
             'name' => 'Name',
-            'activeMail' => 'Active Mail',
-            'realm_uid' => 'Belonging Realm',
-            'forRegistration' => 'For Registration',
+            'activeMail' => 'Stelle Mails bereit',
+            'realm_uid' => 'Zugehöriges Realm',
+            'forRegistration' => 'Zur Registrierung',
         ];
     }
 

@@ -33,7 +33,7 @@ class DomainController extends Controller
                     [
                         'allow' => true,
                         'actions' => [],
-                        'roles' => ['realm-crud'],
+                        //'roles' => ['realm-crud'],
                     ],
                     [
                         'allow' => false,
