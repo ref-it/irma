@@ -92,7 +92,6 @@ class RoleController extends Controller
     public function actionAddUser(int $roleId) : Response|string
     {
         $role = $this->findModel($roleId);
-        $gremium = $role->gremium;
         $assertion = new RoleAssertion();
         $assertion->role_id = $roleId;
         if ($assertion->load(Yii::$app->request->post()) && $assertion->save()) {
@@ -101,7 +100,6 @@ class RoleController extends Controller
         return $this->render('assert-user', [
             'role' => $role,
             'model' => $assertion,
-            'gremium' => $gremium,
             'users' => User::find()->all()
         ]);
     }

@@ -46,7 +46,7 @@ class Realm extends ActiveRecord
     public function attributeLabels() : array
     {
         return [
-            'uid' => 'Kurzname',
+            'uid' => 'Kürzel',
             'long_name' => 'Vollständiger Name',
         ];
     }

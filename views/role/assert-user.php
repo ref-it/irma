@@ -1,7 +1,6 @@
 <?php
 
 /* @var $this \yii\web\View */
-/* @var $gremium \app\models\db\Gremium */
 /* @var $role \app\models\db\Role */
 /* @var $model \app\models\db\RoleAssertion */
 /* @var $users \app\models\db\User[] */
@@ -13,7 +12,7 @@ use yii\helpers\ArrayHelper;
 
 $this->title = Yii::t('app', "'$role->name' zuweisen");
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Gremien'), 'url' => ['gremien/index']];
-$this->params['breadcrumbs'][] = ['label' => $gremium, 'url' => ['gremien/view', 'id' => $gremium]];
+$this->params['breadcrumbs'][] = ['label' => $role->gremium->name, 'url' => ['gremien/view', 'id' => $role->gremium->id]];
 $this->params['breadcrumbs'][] = ['label' => $role->name, 'url' => ['role/view', 'id' => $role->id]];
 $this->params['breadcrumbs'][] = 'zuweisen';
 
