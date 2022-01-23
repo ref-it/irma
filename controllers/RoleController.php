@@ -60,10 +60,9 @@ class RoleController extends Controller
             return $this->redirect(['gremien/view', 'id' => $gremiumId]);
         }
         $gremium = Gremium::findOne($gremiumId);
-        $model->belongingGremium = $gremiumId;
+        $model->gremium_id = $gremiumId;
         return $this->render('create', [
             'model' => $model,
-            'gremium' => $gremium,
         ]);
     }
 
@@ -93,11 +92,11 @@ class RoleController extends Controller
     public function actionAddUser(int $roleId) : Response|string
     {
         $role = $this->findModel($roleId);
-        $gremium = $role->belongingGremium;
+        $gremium = $role->gremium;
         $assertion = new RoleAssertion();
-
-        if ($assertion->load(Yii::$app->request->post()) && ($assertion->role_id = $roleId) && $assertion->save()) {
-            return $this->redirect(['gremien/view', 'id' => $role->belongingGremium]);
+        $assertion->role_id = $roleId;
+        if ($assertion->load(Yii::$app->request->post()) && $assertion->save()) {
+            return $this->redirect(['gremien/view', 'id' => $role->gremium_id]);
         }
         return $this->render('assert-user', [
             'role' => $role,

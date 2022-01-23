@@ -18,7 +18,7 @@ class GroupSearch extends Group
     {
         return [
             [['id'], 'integer'],
-            [['name', 'belongingRealm'], 'safe'],
+            [['name', 'realm_uid'], 'safe'],
         ];
     }
 
@@ -62,7 +62,7 @@ class GroupSearch extends Group
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'belongingRealm', $this->belongingRealm]);
+            ->andFilterWhere(['like', 'realm_uid', $this->realm_uid]);
 
         return $dataProvider;
     }

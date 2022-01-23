@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Gremien'), 'url' => ['gremien/index']];
-$this->params['breadcrumbs'][] = ['label' => $model->belongingGremium, 'url' => ['gremien/view', 'id' => $model->belongingGremium]];
+$this->params['breadcrumbs'][] = ['label' => $model->gremium->name, 'url' => ['gremien/view', 'id' => $model->gremium_id]];
 $this->params['breadcrumbs'][] = $this->title;
 
 \yii\web\YiiAsset::register($this);
@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'belongingGremium',
+            'gremium_id',
         ],
     ]) ?>
 

@@ -1,5 +1,6 @@
 <?php
 
+use app\models\db\search\GremiumSearch;
 use rmrevin\yii\fontawesome\FAS;
 use yii\grid\ActionColumn;
 use yii\grid\SerialColumn;
@@ -7,7 +8,7 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $searchModel \app\models\db\search\GremiumSearch */
+/* @var $searchModel GremiumSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Gremien Auswahl');
@@ -29,8 +30,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             //['class' => SerialColumn::class],
             'name',
-            'belongingRealm',
-            'parentGremium',
+            'realm_uid',
+            'parent_gremium_id',
 
             ['class' => ActionColumn::class],
         ],

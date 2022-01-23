@@ -10,9 +10,9 @@ use yii\db\ActiveRecord;
  *
  * @property int $id
  * @property string|null $name
- * @property string|null $belongingRealm
+ * @property string|null $realm_uid
  *
- * @property Realm $belongingRealm0
+ * @property-read Realm $realm
  */
 class Group extends ActiveRecord
 {
@@ -31,8 +31,8 @@ class Group extends ActiveRecord
     {
         return [
             [['name'], 'string', 'max' => 64],
-            [['belongingRealm'], 'string', 'max' => 32],
-            [['belongingRealm'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::className(), 'targetAttribute' => ['belongingRealm' => 'uid']],
+            [['realm_uid'], 'string', 'max' => 32],
+            [['realm_uid'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['realm_uid' => 'uid']],
         ];
     }
 
@@ -44,17 +44,17 @@ class Group extends ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'belongingRealm' => 'Belonging Realm',
+            'realm_uid' => 'Zugehöriger Realm',
         ];
     }
 
     /**
-     * Gets query for [[BelongingRealm0]].
+     * Gets query for [[Realm]].
      *
      * @return ActiveQuery
      */
-    public function getBelongingRealm(): ActiveQuery
+    public function getRealm(): ActiveQuery
     {
-        return $this->hasOne(Realm::class, ['uid' => 'belongingRealm']);
+        return $this->hasOne(Realm::class, ['uid' => 'realm_uid']);
     }
 }

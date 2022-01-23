@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'activeMail:email',
-            'belongingRealm',
+            'realm_uid',
             'forRegistration',
             'name',
         ],

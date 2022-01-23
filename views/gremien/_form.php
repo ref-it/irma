@@ -15,7 +15,7 @@ use yii\helpers\Html;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'belongingRealm')->dropDownList(
+    <?= $form->field($model, 'realm_uid')->dropDownList(
         ArrayHelper::map(app\models\db\Realm::find()->all(), 'uid', 'uid'),
         [
             'prompt' => 'Wähle...',
@@ -23,7 +23,7 @@ use yii\helpers\Html;
         ]
     ) ?>
 
-    <?= $form->field($model, 'parentGremium')->dropDownList(
+    <?= $form->field($model, 'parent_gremium_id')->dropDownList(
         ArrayHelper::map(app\models\db\Gremium::find()->all(), 'id', 'name'),
         [
             'prompt' => 'Wähle...',

@@ -67,7 +67,7 @@ class Realm extends \yii\db\ActiveRecord
      */
     public function getGremien(): ActiveQuery
     {
-        return $this->hasMany(Gremium::class, ['belongingRealm' => 'uid']);
+        return $this->hasMany(Gremium::class, ['realm_uid' => 'uid']);
     }
 
     /**
@@ -77,7 +77,7 @@ class Realm extends \yii\db\ActiveRecord
      */
     public function getGroups(): ActiveQuery
     {
-        return $this->hasMany(Group::class, ['belongingRealm' => 'uid']);
+        return $this->hasMany(Group::class, ['realm_uid' => 'uid']);
     }
 
     /**

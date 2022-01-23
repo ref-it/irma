@@ -17,7 +17,7 @@ use yii\helpers\Html;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'belongingGremium')->dropDownList(
+    <?= $form->field($model, 'gremium_id')->dropDownList(
         ArrayHelper::map(app\models\db\Gremium::find()->all(), 'id', 'name'),
         [
             'prompt' => 'Wähle...',

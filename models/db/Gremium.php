@@ -9,17 +9,20 @@ use yii\db\ActiveQuery;
  *
  * @property int $id
  * @property string $name
+ * @property int $parent_gremium_id
+ * @property int $realm_uid
  *
- * @property Gremium $parentGremium
- * @property Realm $belongingRealm
- * @property Role[] $roles
+ * @property-read Realm $realm
+ * @property-read Gremium $parentGremium
+ * @property-read Gremium[] $childGremien
+ * @property-read Role[] $roles
  */
 class Gremium extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName() : string
     {
         return 'gremium';
     }
@@ -30,13 +33,13 @@ class Gremium extends \yii\db\ActiveRecord
     public function rules(): array
     {
         return [
-            [['name', 'belongingRealm'], 'required'],
-            [['id', 'parentGremium'], 'integer'],
+            [['name', 'realm_uid'], 'required'],
+            [['id', 'parent_gremium_id'], 'integer'],
             [['name'], 'string', 'max' => 128],
-            [['belongingRealm'], 'string', 'max' => 32],
+            [['realm_uid'], 'string', 'max' => 32],
             [['id'], 'unique'],
-            [['parentGremium'], 'exist', 'skipOnError' => true, 'targetClass' => __CLASS__, 'targetAttribute' => ['parentGremium' => 'id']],
-            [['belongingRealm'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['belongingRealm' => 'uid']],
+            [['parent_gremium_id'], 'exist', 'skipOnError' => true, 'targetClass' => __CLASS__, 'targetAttribute' => ['parent_gremium_id' => 'id']],
+            [['realm_uid'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['realm_uid' => 'uid']],
         ];
     }
 
@@ -48,39 +51,39 @@ class Gremium extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'belongingRealm' => 'Zugehöriger Realm',
-            'parentGremium' => 'Übergeordnetes Gremium',
+            'realm_uid' => 'Zugehöriger Realm',
+            'parent_gremium_id' => 'Übergeordnetes Gremium',
         ];
     }
 
     /**
-     * Gets query for [[ParentGremium0]].
+     * Gets query for [[parentGremium]].
      *
      * @return ActiveQuery
      */
     public function getParentGremium(): ActiveQuery
     {
-        return $this->hasOne(__CLASS__, ['id' => 'parentGremium']);
+        return $this->hasOne(__CLASS__, ['id' => 'parent_gremium_id']);
     }
 
     /**
-     * Gets query for [[Gremiens]].
+     * Gets query for [[Gremien]].
      *
      * @return ActiveQuery
      */
     public function getChildGremien(): ActiveQuery
     {
-        return $this->hasMany(__CLASS__, ['parentGremium' => 'id']);
+        return $this->hasMany(__CLASS__, ['parent_gremium_id' => 'id']);
     }
 
     /**
-     * Gets query for [[BelongingRealm0]].
+     * Gets query for [[Realm]].
      *
      * @return ActiveQuery
      */
-    public function getBelongingRealm(): ActiveQuery
+    public function getRealm(): ActiveQuery
     {
-        return $this->hasOne(Realm::class, ['uid' => 'belongingRealm']);
+        return $this->hasOne(Realm::class, ['uid' => 'realm_uid']);
     }
 
     /**
@@ -88,14 +91,9 @@ class Gremium extends \yii\db\ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getRoles()
+    public function getRoles() : ActiveQuery
     {
-        return $this->hasMany(Role::class, ['belongingGremium' => 'id']);
+        return $this->hasMany(Role::class, ['gremium_id' => 'id']);
     }
 
-    public static function findByRealm() : ActiveQuery
-    {
-        $realms = \Yii::$app->user->getRealms();
-        return Gremium::find()->where(['belongingRealm' => $realms]);
-    }
 }

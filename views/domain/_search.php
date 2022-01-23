@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'activeMail') ?>
 
-    <?= $form->field($model, 'belongingRealm') ?>
+    <?= $form->field($model, 'realm_uid') ?>
 
     <?= $form->field($model, 'forRegistration') ?>
 

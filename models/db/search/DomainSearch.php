@@ -18,7 +18,7 @@ class DomainSearch extends Domain
     {
         return [
             [['id', 'activeMail', 'forRegistration'], 'integer'],
-            [['belongingRealm', 'name'], 'safe'],
+            [['realm_uid', 'name'], 'safe'],
         ];
     }
 
@@ -63,7 +63,7 @@ class DomainSearch extends Domain
             'forRegistration' => $this->forRegistration,
         ]);
 
-        $query->andFilterWhere(['like', 'belongingRealm', $this->belongingRealm])
+        $query->andFilterWhere(['like', 'realm_uid', $this->realm_uid])
             ->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;

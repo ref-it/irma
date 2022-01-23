@@ -10,9 +10,10 @@ use yii\db\ActiveRecord;
  *
  * @property int $id
  * @property string|null $name
- * @property Gremium $belongingGremium
+ * @property Gremium $gremium_id
  *
- * @property-read ActiveQuery $roleAssertions
+ * @property-read RoleAssertion $roleAssertions
+ * @property-read Gremium $gremium
  * @property User[] $assertedUsers
  */
 class Role extends ActiveRecord
@@ -32,11 +33,11 @@ class Role extends ActiveRecord
     public function rules() : array
     {
         return [
-            [['belongingGremium'], 'required'],
-            [['id', 'belongingGremium'], 'integer'],
+            [['gremium_id'], 'required'],
+            [['id', 'gremium_id'], 'integer'],
             [['name'], 'string', 'max' => 64, 'min' => 2],
             [['id'], 'unique'],
-            [['belongingGremium'], 'exist', 'skipOnError' => true, 'targetClass' => Gremium::class, 'targetAttribute' => ['belongingGremium' => 'id']],
+            [['gremium_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gremium::class, 'targetAttribute' => ['gremium_id' => 'id']],
         ];
     }
 
@@ -48,18 +49,18 @@ class Role extends ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'belongingGremium' => 'Zugehöriges Gremium',
+            'gremium_id' => 'Zugehöriges Gremium',
         ];
     }
 
     /**
-     * Gets query for [[BelongingGremium0]].
+     * Gets query for [[Gremium]].
      *
      * @return ActiveQuery
      */
-    public function getBelongingGremium() : ActiveQuery
+    public function getGremium() : ActiveQuery
     {
-        return $this->hasOne(Gremium::class, ['id' => 'belongingGremium']);
+        return $this->hasOne(Gremium::class, ['id' => 'gremium_id']);
     }
 
     public function getRoleAssertions() : ActiveQuery

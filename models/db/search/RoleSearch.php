@@ -17,7 +17,7 @@ class RoleSearch extends Role
     public function rules() : array
     {
         return [
-            [['id', 'belongingGremium'], 'integer'],
+            [['id', 'gremium_id'], 'integer'],
             [['name'], 'safe'],
         ];
     }
@@ -25,7 +25,7 @@ class RoleSearch extends Role
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios() : array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
@@ -59,7 +59,7 @@ class RoleSearch extends Role
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'belongingGremium' => $this->belongingGremium,
+            'gremium_id' => $this->gremium_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

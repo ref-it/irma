@@ -2,6 +2,7 @@
 
 namespace app\models\db;
 
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -9,8 +10,9 @@ use yii\db\ActiveRecord;
  *
  * @property string|null $name
  * @property int|null $activeMail
- * @property string|null $belongingRealm
+ * @property string|null $realm_uid
  * @property int|null $forRegistration
+ * @property-read Realm $realm
  * @property int $id [int(11)]
  *
  */
@@ -35,8 +37,8 @@ class Domain extends ActiveRecord
             [['name'], 'string', 'max' => 128],
             [['name'], 'unique'],
             [['activeMail', 'forRegistration'], 'boolean'],
-            [['belongingRealm'], 'string', 'max' => 32],
-            [['belongingRealm'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['belongingRealm' => 'uid']],
+            [['realm_uid'], 'string', 'max' => 32],
+            [['realm_uid'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['realm_uid' => 'uid']],
             [['forRegistration'], 'boolean'],
         ];
     }
@@ -49,18 +51,18 @@ class Domain extends ActiveRecord
         return [
             'name' => 'Name',
             'activeMail' => 'Active Mail',
-            'belongingRealm' => 'Belonging Realm',
+            'realm_uid' => 'Belonging Realm',
             'forRegistration' => 'For Registration',
         ];
     }
 
     /**
-     * Gets query for [[BelongingRealm]].
+     * Gets query for [[Realm]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getBelongingRealm()
+    public function getRealm() : ActiveQuery
     {
-        return $this->hasOne(Realm::class, ['uid' => 'belongingRealm']);
+        return $this->hasOne(Realm::class, ['uid' => 'realm_uid']);
     }
 }

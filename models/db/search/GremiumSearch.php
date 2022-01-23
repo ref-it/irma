@@ -17,8 +17,8 @@ class GremiumSearch extends Gremium
     public function rules() : array
     {
         return [
-            [['id', 'parentGremium'], 'integer'],
-            [['name', 'belongingRealm'], 'safe'],
+            [['id', 'parent_gremium_id'], 'integer'],
+            [['name', 'realm_uid'], 'safe'],
         ];
     }
 
@@ -59,11 +59,11 @@ class GremiumSearch extends Gremium
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'parentGremium' => $this->parentGremium,
+            'parent_gremium_id' => $this->parent_gremium_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'belongingRealm', $this->belongingRealm]);
+            ->andFilterWhere(['like', 'realm_uid', $this->realm_uid]);
 
         return $dataProvider;
     }

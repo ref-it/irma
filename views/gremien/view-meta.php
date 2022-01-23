@@ -15,8 +15,8 @@ echo $this->render('view', ['model' => $model, 'activeTabName' => 'meta']);
     'attributes' => [
         'id',
         'name',
-        'belongingRealm',
-        'parentGremium',
+        'realm_uid',
+        'parent_gremium_id',
     ],
 ]) ?>
 

@@ -17,10 +17,10 @@ use yii\helpers\Html;
 
     <?= $form->field($model, 'activeMail') ?>
 
-    <?= $form->field($model, 'belongingRealm')->dropDownList(
+    <?= $form->field($model, 'realm_uid')->dropDownList(
         ArrayHelper::map(app\models\db\Realm::find()->all(), 'uid', 'uid'),
         [
-            'prompt' => 'Select...',
+            'prompt' => 'Wähle...',
             'disabled' => false, // TODO: can view Realms
         ]
     ) ?>

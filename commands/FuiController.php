@@ -26,7 +26,7 @@ class FuiController extends \yii\console\Controller
         foreach ($groups as $group){
             $g = new Group();
             $g->name = $realm . "-" . $group;
-            $g->belongingRealm = $realm;
+            $g->realm_uid = $realm;
             $g->save();
         }
     }

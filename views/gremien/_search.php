@@ -19,9 +19,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'belongingRealm') ?>
+    <?= $form->field($model, 'realm_uid') ?>
 
-    <?= $form->field($model, 'parentGremium') ?>
+    <?= $form->field($model, 'parent_gremium_id') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
