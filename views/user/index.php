@@ -26,20 +26,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'id',
+            //'id',
             'fullName',
             'username',
             'email:email',
             [
                 'label' => 'Status',
+                'attribute' => 'status',
                 'value' => static function(\app\models\db\User $user){
                     return match ($user->status){
-                        0 => FAS::icon('hourglass-half') . ' E-Mail nicht bestätigt',
-                        1 => FAS::icon('check') . ' E-Mail bestätigt',
-                        2 => FAS::icon('cross') . 'Blockiert',
+                        0 => FAS::icon('hourglass-half') . ' Email nicht bestätigt',
+                        1 => FAS::icon('check') . ' Email bestätigt',
+                        2 => FAS::icon('cross') . ' Blockiert',
                     };
                 },
-                'format' => 'html'
+                'format' => 'html',
+                'filter' => [
+                    0 => 'E-Mail nicht bestätigt',
+                    1 => 'E-Mail bestätigt',
+                    2 => 'Blockiert',
+                ],
+                'filterInputOptions' => ['prompt' => 'Alle Nutzer', 'class' => 'form-control', 'id' => null]
             ],
             //'phone',
             //'iban',

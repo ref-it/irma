@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => SerialColumn::class],
+            //['class' => SerialColumn::class],
             'name',
             'belongingRealm',
             'parentGremium',

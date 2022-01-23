@@ -3,6 +3,7 @@
 namespace app\models\db;
 
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "roles".
@@ -11,15 +12,16 @@ use yii\db\ActiveQuery;
  * @property string|null $name
  * @property int $belongingGremium
  *
+ * @property-read ActiveQuery $roleAssertions
  * @property User[] $assertedUsers
  */
-class Role extends \yii\db\ActiveRecord
+class Role extends ActiveRecord
 {
 
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName() : string
     {
         return 'role';
     }
@@ -27,12 +29,12 @@ class Role extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules() : array
     {
         return [
-            [['id', 'belongingGremium'], 'required'],
+            [['belongingGremium'], 'required'],
             [['id', 'belongingGremium'], 'integer'],
-            [['name'], 'string', 'max' => 64],
+            [['name'], 'string', 'max' => 64, 'min' => 2],
             [['id'], 'unique'],
             [['belongingGremium'], 'exist', 'skipOnError' => true, 'targetClass' => Gremium::class, 'targetAttribute' => ['belongingGremium' => 'id']],
         ];
@@ -46,7 +48,7 @@ class Role extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'belongingGremium' => 'Belonging Gremium',
+            'belongingGremium' => 'Zugehöriges Gremium',
         ];
     }
 

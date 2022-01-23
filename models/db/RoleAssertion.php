@@ -3,6 +3,7 @@
 namespace app\models\db;
 
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "role_assertions".
@@ -10,14 +11,17 @@ use yii\db\ActiveQuery;
  * @property string|null $user_id
  * @property int|null $role_id
  *
+ * @property-read ActiveQuery $user
  * @property Role $role
+ * @property string $from [date]
+ * @property string $until [date]
  */
-class RoleAssertion extends \yii\db\ActiveRecord
+class RoleAssertion extends ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'role_assertion';
     }
@@ -25,7 +29,7 @@ class RoleAssertion extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['role_id'], 'integer'],
@@ -42,7 +46,7 @@ class RoleAssertion extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels() : array
     {
         return [
             'user_id' => 'Nutzer',

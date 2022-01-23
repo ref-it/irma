@@ -2,14 +2,14 @@
 
 namespace app\models\db\search;
 
-use app\models\db\Gremium;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use app\models\db\Role;
 
 /**
- * GremienSearch represents the model behind the search form of `app\models\Gremien`.
+ * RoleSearch represents the model behind the search form of `app\models\db\Role`.
  */
-class GremiumSearch extends Gremium
+class RoleSearch extends Role
 {
     /**
      * {@inheritdoc}
@@ -17,15 +17,15 @@ class GremiumSearch extends Gremium
     public function rules() : array
     {
         return [
-            [['id', 'parentGremium'], 'integer'],
-            [['name', 'belongingRealm'], 'safe'],
+            [['id', 'belongingGremium'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function scenarios(): array
+    public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
@@ -38,9 +38,9 @@ class GremiumSearch extends Gremium
      *
      * @return ActiveDataProvider
      */
-    public function search(array $params): ActiveDataProvider
+    public function search($params)
     {
-        $query = Gremium::find();
+        $query = Role::find();
 
         // add conditions that should always apply here
 
@@ -59,11 +59,10 @@ class GremiumSearch extends Gremium
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'parentGremium' => $this->parentGremium,
+            'belongingGremium' => $this->belongingGremium,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'belongingRealm', $this->belongingRealm]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

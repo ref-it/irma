@@ -20,10 +20,11 @@ $dataProvider = new ActiveDataProvider([
     ],
 ]);
 
+echo Html::a(FAS::icon('plus') . ' Rolle erstellen', ['role/create', 'gremiumId' => $model->id], ['class' => ['btn', 'btn-success']]);
 echo \yii\grid\GridView::widget([
     'dataProvider' => $dataProvider,
     'columns' => [
-        ['class' => SerialColumn::class],
+        //['class' => SerialColumn::class],
         'name',
         [
             'label' => 'Nutzer*innen',
@@ -38,6 +39,5 @@ echo \yii\grid\GridView::widget([
     ]
 ]);
 
-echo Html::a(FAS::icon('plus') . ' Rolle erstellen', ['role/create', 'gremiumId' => $model->id], ['class' => ['btn', 'btn-success']]);
 
 ?>
