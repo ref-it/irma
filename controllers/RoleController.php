@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\db\Gremium;
+use app\models\db\RoleAssertion;
+use app\models\db\User;
 use Yii;
 use app\models\db\Role;
 use yii\db\StaleObjectException;
@@ -82,6 +84,26 @@ class RoleController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+        ]);
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionAddUser(int $roleId) : Response|string
+    {
+        $role = $this->findModel($roleId);
+        $gremium = $role->belongingGremium;
+        $assertion = new RoleAssertion();
+
+        if ($assertion->load(Yii::$app->request->post()) && ($assertion->role_id = $roleId) && $assertion->save()) {
+            return $this->redirect(['gremien/view', 'id' => $role->belongingGremium]);
+        }
+        return $this->render('assert-user', [
+            'role' => $role,
+            'model' => $assertion,
+            'gremium' => $gremium,
+            'users' => User::find()->all()
         ]);
     }
 

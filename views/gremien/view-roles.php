@@ -31,8 +31,8 @@ echo \yii\grid\GridView::widget([
             'value' => static function (Role $role) {
                 $users = $role->assertedUsers;
                 $res = array_map(static fn (\app\models\db\User $user) => $user->fullName, $users);
-                $add = Html::a(FAS::icon('plus'), ['role-assertion/create', 'roleId' => $role->id]);
-                return implode(',', $res) . ' ' . $add;
+                $add = Html::a(FAS::icon('plus'), ['role/add-user', 'roleId' => $role->id]);
+                return implode(', ', $res) . ' ' . $add;
             },
             'format' => 'html'
         ],

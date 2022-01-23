@@ -7,8 +7,10 @@ use yii\widgets\DetailView;
 /* @var $model app\models\db\Role */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Roles'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Gremien'), 'url' => ['gremien/index']];
+$this->params['breadcrumbs'][] = ['label' => $model->belongingGremium, 'url' => ['gremien/view', 'id' => $model->belongingGremium]];
 $this->params['breadcrumbs'][] = $this->title;
+
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="role-view">

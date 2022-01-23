@@ -10,7 +10,7 @@ use yii\db\ActiveRecord;
  *
  * @property int $id
  * @property string|null $name
- * @property int $belongingGremium
+ * @property Gremium $belongingGremium
  *
  * @property-read ActiveQuery $roleAssertions
  * @property User[] $assertedUsers
@@ -64,7 +64,7 @@ class Role extends ActiveRecord
 
     public function getRoleAssertions() : ActiveQuery
     {
-        return $this->hasOne(RoleAssertion::class, ['role_id' => 'id']);
+        return $this->hasMany(RoleAssertion::class, ['role_id' => 'id']);
     }
 
     public function getAssertedUsers() : ActiveQuery

@@ -34,10 +34,12 @@ class RoleAssertion extends ActiveRecord
         return [
             [['role_id'], 'integer'],
             [['user_id'], 'integer'],
+            [['from', 'until'], 'date', 'format' => 'Y-m-d'],
+            [['from', 'role_id', 'user_id'], 'required'],
             [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
             [['role_id'], 'unique',
-                'targetAttribute' => ['group_id', 'user_id'],
+                'targetAttribute' => ['role_id', 'user_id'],
                 'message' => 'Nutzer:in besitzt diese Rolle bereits',
             ],
         ];
@@ -51,6 +53,8 @@ class RoleAssertion extends ActiveRecord
         return [
             'user_id' => 'Nutzer',
             'role_id' => 'Rolle',
+            'from' => 'Zugeordnet ab',
+            'until' => 'Zugeordnet bis',
         ];
     }
 
