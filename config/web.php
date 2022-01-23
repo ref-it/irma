@@ -4,7 +4,6 @@ use app\models\db\User;
 use yii\caching\FileCache;
 use yii\log\FileTarget;
 use yii\rbac\DbManager;
-use yii\swiftmailer\Mailer;
 
 if(!file_exists(__DIR__ . '/secrets.php')){
     die("config/secrets.php missing");
@@ -59,17 +58,15 @@ $config = [
             'errorAction' => 'site/error'
         ],
         'mailer' => [
-            'class' => Mailer::class,
+            'class' => \yii\symfonymailer\Mailer::class,
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
             'useFileTransport' => YII_ENV_DEV,
-	    'messageConfig' => [
-		'from' => 'service@open-administration.de',
+            'messageConfig' => [
+                'from' => 'service@open-administration.de',
             ],
-	    'transport' => [
-                'class' => Swift_SmtpTransport::class,
-            ] + $secrets['mail'] ?? [],
+            'transport' => $secrets['mail'] ?? [],
         ],
 
         'log' => [
