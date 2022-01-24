@@ -88,7 +88,7 @@ class Realm extends ActiveRecord
      */
     public function getRealmAssertions(): ActiveQuery
     {
-        return $this->hasMany(RealmAssertion::class, ['realm_id' => 'uid']);
+        return $this->hasMany(RealmAssertion::class, ['realm_uid' => 'uid']);
     }
 
     public function getAssertedUsers() : ActiveQuery

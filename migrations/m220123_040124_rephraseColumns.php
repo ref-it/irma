@@ -12,6 +12,8 @@ class m220123_040124_rephraseColumns extends Migration
      */
     public function safeUp()
     {
+        $this->renameColumn('realm_admin', 'realm_id', 'realm_uid');
+        $this->renameColumn('realm_assertion', 'realm_id', 'realm_uid');
         $this->renameColumn('domain', 'belongingRealm', 'realm_uid');
         $this->renameColumn('gremium', 'belongingRealm', 'realm_uid');
         $this->renameColumn('group', 'belongingRealm', 'realm_uid');

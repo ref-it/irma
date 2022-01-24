@@ -4,11 +4,15 @@ namespace app\controllers;
 
 use app\models\db\Realm;
 use app\models\db\search\RealmSearch;
+use app\models\db\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Request;
+use yii\web\Response;
 
 /**
  * RealmController implements the CRUD actions for Realms model.
@@ -31,13 +35,7 @@ class RealmController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => true,
-                        'actions' => [],
-                        //'roles' => ['realm-crud'],
-                    ],
-                    [
-                        'allow' => false,
-                        'actions' => [],
+                        'allow' => Yii::$app->user->identity->isSuperAdmin(),
                     ],
                 ],
             ],
@@ -46,9 +44,9 @@ class RealmController extends Controller
 
     /**
      * Lists all Realms models.
-     * @return mixed
+     * @return string
      */
-    public function actionIndex()
+    public function actionIndex() : string
     {
         $searchModel = new RealmSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -65,7 +63,7 @@ class RealmController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView(string $id) : string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -75,14 +73,13 @@ class RealmController extends Controller
     /**
      * Creates a new Realms model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return Response|string
      */
-    public function actionCreate()
+    public function actionCreate() : Response|string
     {
         $model = new Realm();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $this->afterRealmCreation($model);
             return $this->redirect(['view', 'id' => $model->uid]);
         }
 
@@ -132,7 +129,7 @@ class RealmController extends Controller
      * @return Realm the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(string $id) : Realm
     {
         if (($model = Realm::findOne($id)) !== null) {
             return $model;
@@ -141,11 +138,4 @@ class RealmController extends Controller
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
-    private function afterRealmCreation(Realm $realm)
-    {
-        $auth = Yii::$app->authManager;
-        $rA = $auth->createRole($realm->uid . "-RealmAdmin");
-        $rA->description = "Admin of the Realm " . $realm->uid;
-        $auth->add($rA);
-    }
 }

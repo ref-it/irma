@@ -57,12 +57,13 @@ class SiteController extends Controller
         }
 
         $adminRealms = RealmAdmin::find()
-            ->select('realm_id')
+            ->select('realm_uid')
             ->where(['user_id' => Yii::$app->user->getId()])
             ->column();
 
         if(count($adminRealms) > 0){
-            return $this->render('home', [ 'adminRealms' => $adminRealms]);
+            return $this->redirect('gremien/index');
+            //return $this->render('home', [ 'adminRealms' => $adminRealms]);
         }else{
             return $this->redirect(['site/profile']);
         }

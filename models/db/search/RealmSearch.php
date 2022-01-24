@@ -64,6 +64,7 @@ class RealmSearch extends Realm
         $query->andFilterWhere(['like', 'uid', $this->uid])
             ->andFilterWhere(['like', 'long_name', $this->long_name]);
 
+
         return $dataProvider;
     }
 

@@ -6,6 +6,7 @@ use app\models\forms\MailInviteForm;
 use Yii;
 use app\models\db\User;
 use app\models\db\search\UserSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -19,9 +20,23 @@ class UserController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors() : array
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => Yii::$app->user->identity->isSuperAdmin(),
+                        'actions' => ['view', 'update', 'delete'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'invite'],
+                        'roles' => ['@'], // logged in only
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
@@ -35,7 +50,7 @@ class UserController extends Controller
      * Lists all User models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex() : string
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -52,7 +67,7 @@ class UserController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView(int $id) : string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -79,10 +94,10 @@ class UserController extends Controller
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return Response|string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id) : Response|string
     {
         $model = $this->findModel($id);
 
@@ -102,7 +117,7 @@ class UserController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id) : Response
     {
         $this->findModel($id)->delete();
 
@@ -116,7 +131,7 @@ class UserController extends Controller
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id) : User
     {
         if (($model = User::findOne($id)) !== null) {
             return $model;

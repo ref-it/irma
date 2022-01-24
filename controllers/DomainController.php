@@ -22,7 +22,7 @@ class DomainController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -31,12 +31,7 @@ class DomainController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => true,
-                        'actions' => [],
-                        //'roles' => ['realm-crud'],
-                    ],
-                    [
-                        'allow' => false,
+                        'allow' => Yii::$app->user->identity->isSuperAdmin(),
                         'actions' => [],
                     ],
                 ],

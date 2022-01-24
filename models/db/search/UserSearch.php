@@ -2,6 +2,7 @@
 
 namespace app\models\db\search;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\db\User;
@@ -38,10 +39,10 @@ class UserSearch extends User
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params) : ActiveDataProvider
     {
         $query = User::find();
-
+        $identity = Yii::$app->user->identity;
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -62,16 +63,15 @@ class UserSearch extends User
             'status' => $this->status,
         ]);
 
+        if(!$identity->isSuperAdmin()){
+            $query->innerJoin('realm_assertion', 'realm_assertion.user_id = user.id');
+            $query->andWhere(['realm_uid' => $identity->realmUids]);
+        }
+
         $query->andFilterWhere(['like', 'fullName', $this->fullName])
             ->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'password', $this->password])
-            ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'iban', $this->iban])
-            ->andFilterWhere(['like', 'adresse', $this->adresse])
-            ->andFilterWhere(['like', 'token', $this->token])
-            ->andFilterWhere(['like', 'authKey', $this->authKey])
-            ->andFilterWhere(['like', 'profilePic', $this->profilePic]);
+            ->andFilterWhere(['like', 'email', $this->email]);
+
 
         return $dataProvider;
     }

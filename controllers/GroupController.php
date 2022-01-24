@@ -18,25 +18,20 @@ class GroupController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors() : array
     {
         return [
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => true,
-                        'actions' => [],
-                        //'roles' => ['realm-crud'],
-                    ],
-                    [
-                        'allow' => false,
+                        'allow' => Yii::$app->user->identity->isSuperAdmin(),
                         'actions' => [],
                     ],
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],

@@ -25,7 +25,7 @@ class DomainSearch extends Domain
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
@@ -38,7 +38,7 @@ class DomainSearch extends Domain
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params) : ActiveDataProvider
     {
         $query = Domain::find();
 
@@ -65,6 +65,8 @@ class DomainSearch extends Domain
 
         $query->andFilterWhere(['like', 'realm_uid', $this->realm_uid])
             ->andFilterWhere(['like', 'name', $this->name]);
+
+
 
         return $dataProvider;
     }

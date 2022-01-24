@@ -51,13 +51,13 @@ class RbacController extends \yii\console\Controller
         }
 
         $ras = new RealmAssertion();
-        $ras->realm_id = $realm;
+        $ras->realm_uid = $realm;
         $ras->user_id = $user->id;
         $ras->save();
 
         $rad = new RealmAdmin();
         $rad->user_id = $user->id;
-        $rad->realm_id = $realm;
+        $rad->realm_uid = $realm;
         $rad->save();
         return ExitCode::OK;
     }

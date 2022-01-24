@@ -29,6 +29,7 @@ use yii\web\IdentityInterface;
  * @property string $profilePic [varchar(32)]
  * @property-read Realm[] $adminRealms
  * @property-read Realm[] $realms
+ * @property-read string[] $realmUids
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -74,7 +75,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['adresse'], 'string', 'max' => 256],
             [['username',], 'unique',
                 'targetAttribute' => ['username'],
-                'message' => 'Der Nutzer:innenname wird bereits verwendet',
+                'message' => 'Der Nutzer*innenname wird bereits verwendet',
             ],
             [['password', 'password_repeat'], 'string', 'max' => 128, 'min' => 10, 'on' => self::SCENARIO_REGISTER],
             ['password_repeat', 'compare',
@@ -150,7 +151,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'email' => 'E-Mail Adresse',
-            'username' => 'Nutzer:innenname',
+            'username' => 'Nutzer*innenname',
             'fullName' => 'Vollständiger Name',
             'password' => 'Passwort',
             'password_repeat' => 'Passwort wiederholen',
@@ -182,17 +183,13 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return ActiveQuery
      */
-    public function getGroups()
+    public function getGroups(): ActiveQuery
     {
         return $this->hasMany(Group::class, ['id' => 'group_id'])->viaTable('group_assertion', ['user_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[RealmAdmins]].
-     *
-     * @return ActiveQuery
-     */
-    public function getRealmAdmins()
+
+    public function getAdminRealmAssertions() : ActiveQuery
     {
         return $this->hasMany(RealmAdmin::class, ['user_id' => 'id']);
     }
@@ -204,7 +201,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getAdminRealms() : ActiveQuery
     {
-        return $this->hasMany(Realm::class, ['uid' => 'realm_id'])->viaTable('realm_admin', ['user_id' => 'id']);
+        return $this->hasMany(Realm::class, ['uid' => 'realm_uid'])->viaTable('realm_admin', ['user_id' => 'id']);
     }
 
     /**
@@ -224,7 +221,15 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getRealms() : ActiveQuery
     {
-        return $this->hasMany(Realm::class, ['uid' => 'realm_id'])->viaTable('realm_assertion', ['user_id' => 'id']);
+        return $this->hasMany(Realm::class, ['uid' => 'realm_uid'])->viaTable('realm_assertion', ['user_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getRealmUids() : ActiveQuery
+    {
+        return $this->hasMany(RealmAssertion::class, ['user_id' => 'id'])->select('realm_uid')->asArray();
     }
 
     /**
@@ -255,6 +260,31 @@ class User extends ActiveRecord implements IdentityInterface
     public function getRoles() : ActiveQuery
     {
         return $this->hasMany(Role::class, ['id' => 'role_id'])->viaTable('role_assertion', ['user_id' => 'id']);
+    }
+
+    public function isSuperAdmin() : bool
+    {
+        return $this->getAdminRealmAssertions()->where(['realm_uid' => 'oa', 'user_id' => $this->id])->exists();
+    }
+
+    public function isRealmAdmin(string $realmUid) : bool
+    {
+        if($this->isSuperAdmin()){
+            // short circuit if realm admin
+            return true;
+        }
+        //might be better cached if traversed in php not in sql
+        return $this->getAdminRealmAssertions()->where(['realm_uid' => $realmUid, 'user_id' => $this->id])->exists();
+    }
+
+    public function isRealmMember(string $realmUid) : bool
+    {
+        if($this->isRealmAdmin($realmUid)){
+            // short circuit if realm admin
+            return true;
+        }
+        //might be better cached if traversed in php not in sql
+        return $this->getRealmAssertions()->where(['realm_uid' => $realmUid, 'user_id' => $this->id])->exists();
     }
 
 }

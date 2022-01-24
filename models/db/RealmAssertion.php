@@ -9,7 +9,7 @@ use yii\db\ActiveRecord;
  * This is the model class for table "realm_assertions".
  *
  * @property string|null $user_id
- * @property string|null $realm_id
+ * @property string|null $realm_uid
  *
  * @property-read User $user
  * @property-read Realm $realm
@@ -31,9 +31,9 @@ class RealmAssertion extends ActiveRecord
     {
         return [
             [['user_id'], 'integer'],
-            [['realm_id'], 'string', 'max' => 32],
-            [['realm_id'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['realm_id' => 'uid']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['realm_uid'], 'string', 'max' => 32],
+            [['realm_uid'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['realm_uid' => 'uid']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_uid' => 'id']],
         ];
     }
 
@@ -44,7 +44,7 @@ class RealmAssertion extends ActiveRecord
     {
         return [
             'user_id' => 'User ID',
-            'realm_id' => 'Realm ID',
+            'realm_uid' => 'Realm ID',
         ];
     }
 
@@ -55,7 +55,7 @@ class RealmAssertion extends ActiveRecord
      */
     public function getRealm(): ActiveQuery
     {
-        return $this->hasOne(Realm::class, ['uid' => 'realm_id']);
+        return $this->hasOne(Realm::class, ['uid' => 'realm_uid']);
     }
 
     /**

@@ -6,7 +6,7 @@ namespace app\models\db;
  * This is the model class for table "realm_admin".
  *
  * @property int $user_id
- * @property string $realm_id
+ * @property string $realm_uid
  *
  * @property Realm $realm
  * @property User $user
@@ -27,11 +27,11 @@ class RealmAdmin extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'realm_id'], 'required'],
+            [['user_id', 'realm_uid'], 'required'],
             [['user_id'], 'integer'],
-            [['realm_id'], 'string', 'max' => 16],
-            [['user_id', 'realm_id'], 'unique', 'targetAttribute' => ['user_id', 'realm_id']],
-            [['realm_id'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['realm_id' => 'uid']],
+            [['realm_uid'], 'string', 'max' => 16],
+            [['user_id', 'realm_uid'], 'unique', 'targetAttribute' => ['user_id', 'realm_uid']],
+            [['realm_uid'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['realm_uid' => 'uid']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -43,7 +43,7 @@ class RealmAdmin extends \yii\db\ActiveRecord
     {
         return [
             'user_id' => 'User ID',
-            'realm_id' => 'Realm ID',
+            'realm_uid' => 'Realm ID',
         ];
     }
 
@@ -54,7 +54,7 @@ class RealmAdmin extends \yii\db\ActiveRecord
      */
     public function getRealm()
     {
-        return $this->hasOne(Realm::className(), ['uid' => 'realm_id']);
+        return $this->hasOne(Realm::className(), ['uid' => 'realm_uid']);
     }
 
     /**

@@ -122,7 +122,7 @@ class AuthController extends Controller
                     /** @var Realm $realm */
                     $realmUid = $dom->realm_uid;
                     $rAssert = new RealmAssertion();
-                    $rAssert->realm_id = $realmUid;
+                    $rAssert->realm_uid = $realmUid;
                     $rAssert->user_id = $user->id;
                     $realmAsserted = $rAssert->save();
                     if($realmAsserted){

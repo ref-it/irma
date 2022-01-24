@@ -10,6 +10,7 @@ use Yii;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
 use yii\helpers\Html;
+use yii\helpers\VarDumper;
 
 
 /**
@@ -36,13 +37,14 @@ class NavBar4 extends \yii\bootstrap4\Widget
         /* @var User $id */
         $id = $user->getIdentity();
         $nameTag = $id->fullName ?? $id->username ?? 'Anonymous?!';
+        $isSuperAdmin = $id->isSuperAdmin();
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav mr-auto'],
             'items' => [
                 [
                     'label' => FAS::icon('globe') . ' Realms',
                     'url' => ['realm/'],
-                    'visible' => $isLoggedIn,
+                    'visible' => $isSuperAdmin,
                     'encode' => false,
                 ],
                 [
@@ -60,13 +62,13 @@ class NavBar4 extends \yii\bootstrap4\Widget
                 [
                     'label' => FAS::icon('circle-notch') . ' Gruppen',
                     'url' => ['group/'],
-                    'visible' => $isLoggedIn,
+                    'visible' => $isSuperAdmin,
                     'encode' => false,
                 ],
                 [
                     'label' => FAS::icon('satellite-dish') . ' Domains',
                     'url' => ['domain/'],
-                    'visible' => $isLoggedIn,
+                    'visible' => $isSuperAdmin,
                     'encode' => false,
                 ],
             ]
@@ -77,17 +79,12 @@ class NavBar4 extends \yii\bootstrap4\Widget
             $adminRealms = $id->adminRealms;
             if(!empty($adminRealms)){
                 $adminRealms = array_map(static fn($realm) => $realm->uid, $adminRealms);
-                if(in_array('oa', $adminRealms, true)){
-                    $roleLabel = FAS::icon('dragon') . ' Superadmin';
-                }else{
-                    $roleLabel = FAS::icon('user-cog') . ' Admin: ' . implode(', ' , $adminRealms);
-                }
-            }else{
-                $memberRealms = $id->realms;
-                if(!empty($memberRealms)){
-                    $memberRealms = array_map(static fn($realm) => $realm->uid, $memberRealms);
-                    $roleLabel = FAS::icon('user-tag') . ' Member: ' . implode(', ' , $adminRealms);
-                }
+                $adminLabel = implode(', ' , $adminRealms);
+            }
+            $memberRealms = $id->realms;
+            if(!empty($memberRealms)){
+                $memberRealms = array_diff(array_map(static fn($realm) => $realm->uid, $memberRealms), $adminRealms);
+                $memberLabel = implode(', ' , $memberRealms);
             }
         }
         // align on the right side with ml-auto
@@ -107,10 +104,33 @@ class NavBar4 extends \yii\bootstrap4\Widget
                     'encode' => false,
                 ],
                 [
-                    'label' => $roleLabel,
-                    'visible' => $isLoggedIn,
+                    'label' => FAS::icon('dragon'),
+                    'visible' => $isSuperAdmin,
                     'encode' => false,
-                    'active' => true,
+                    'url' => false,
+                    'options' => [
+                        'title' => 'Superadmin'
+                    ]
+                    //'disabled' => true,
+                ],
+                [
+                    'label' => FAS::icon('user-cog') . ' ' . ($adminLabel ?? ''),
+                    'visible' => $isLoggedIn && !$isSuperAdmin && !empty($adminLabel),
+                    'url' => false,
+                    'encode' => false,
+                    'options' => [
+                        'title' => 'Admin in ' . ($adminLabel ?? '-'),
+                    ]
+                    //'disabled' => true,
+                ],
+                [
+                    'label' => FAS::icon('user-tag') . ' ' . ($memberLabel ?? ''),
+                    'visible' => $isLoggedIn && !$isSuperAdmin && !empty($memberLabel),
+                    'encode' => false,
+                    'url' => false,
+                    'options' => [
+                        'title' => 'Mitglied in ' . ($memberLabel ?? '-')
+                    ]
                     //'disabled' => true,
                 ],
                 [

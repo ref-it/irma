@@ -8,6 +8,7 @@ use Yii;
 use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -27,13 +28,12 @@ class GremienController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => true,
-                        'actions' => [],
-                        //FIXME 'roles' => ['realm-crud'],
+                        'allow' => Yii::$app->user->identity->isSuperAdmin(),
+                        'actions' => ['create', 'update', 'delete'],
                     ],
                     [
-                        'allow' => false,
-                        'actions' => [],
+                        'allow' => true,
+                        'actions' => ['index', 'view'],
                     ],
                 ],
             ],
@@ -48,9 +48,9 @@ class GremienController extends Controller
 
     /**
      * Lists all Gremien models.
-     * @return mixed
+     * @return string
      */
-    public function actionIndex()
+    public function actionIndex() : string
     {
         $searchModel = new GremiumSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -58,6 +58,8 @@ class GremienController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'realms' => Yii::$app->user->identity->realms,
+            'canCreate' => Yii::$app->user->identity->isSuperAdmin(),
         ]);
     }
 
@@ -140,7 +142,12 @@ class GremienController extends Controller
      */
     protected function findModel(int $id) : Gremium
     {
-        if (($model = Gremium::findOne($id)) !== null) {
+        $identity = Yii::$app->user->identity;
+        $aq = Gremium::find()->where(['id' => $id]);
+        if(!$identity->isSuperAdmin()){
+            $aq->andWhere(['realm_uid' => $identity->realmUids]);
+        }
+        if (($model = $aq->one()) !== null) {
             return $model;
         }
 

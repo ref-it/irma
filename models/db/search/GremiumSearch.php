@@ -40,6 +40,7 @@ class GremiumSearch extends Gremium
      */
     public function search(array $params): ActiveDataProvider
     {
+        $identity = \Yii::$app->user->identity;
         $query = Gremium::find();
 
         // add conditions that should always apply here
@@ -61,6 +62,10 @@ class GremiumSearch extends Gremium
             'id' => $this->id,
             'parent_gremium_id' => $this->parent_gremium_id,
         ]);
+
+        if(!$identity->isSuperAdmin()){
+            $query->andWhere(['realm_uid' => $identity->realmUids]);
+        }
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'realm_uid', $this->realm_uid]);
