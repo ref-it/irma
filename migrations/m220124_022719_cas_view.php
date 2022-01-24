@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Class m211002_014915_cas_view
  */
-class m211002_022719_cas_view extends Migration
+class m220124_022719_cas_view extends Migration
 {
     /**
      * {@inheritdoc}
@@ -19,16 +19,18 @@ class m211002_022719_cas_view extends Migration
         Yii::$app->db->createCommand()->setRawSql(
             "CREATE VIEW `cas_attributes` AS " .
             //"SELECT `username`, `attribute`, `value`"
-            "SELECT `username`, 'realm' AS `attribute`, ra.realm_id AS `value` FROM user 
-                    LEFT JOIN realm_assertion AS ra ON ra.user_id = user.id " .
-            "UNION 
-            SELECT `username`, 'groups' AS `attribute`, g.name AS `value` FROM user 
-                    LEFT JOIN `group_assertion` AS ga ON ga.`user_id` = user.id
-                    LEFT JOIN `group` AS g ON g.id = ga.`group_id` " .
-            "UNION
-            SELECT `username`, 'gremien' AS `attribute`, g.name AS `value` FROM user 
-                    LEFT JOIN realm_assertion AS ra ON ra.user_id = user.id 
-                    LEFT JOIN gremium AS g ON g.belongingRealm = ra.realm_id"
+            "SELECT `username`, 'realm' AS `attribute`, ra.realm_uid AS `value` FROM user
+                   LEFT JOIN realm_assertion AS ra ON ra.user_id = user.id
+            UNION
+            SELECT `username`, 'groups' AS `attribute`, g.name AS `value` FROM user
+                   LEFT JOIN `role_assertion` as ra ON ra.user_id = user.id
+                   LEFT JOIN `group_assertion` AS ga ON ga.role_id = ra.role_id
+                   LEFT JOIN `group` AS g ON g.id = ga.`group_id`
+            UNION
+            SELECT `username`, 'gremien' AS `attribute`, g.name AS `value` FROM user
+                    LEFT JOIN `role_assertion` as ra ON ra.user_id = user.id
+                    LEFT JOIN `role` as r ON ra.role_id = r.id
+                    LEFT JOIN gremium AS g ON g.id = r.gremium_id"
         )->execute();
 
     }
