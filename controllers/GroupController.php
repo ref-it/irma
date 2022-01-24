@@ -3,12 +3,15 @@
 namespace app\controllers;
 
 use app\models\db\Group;
+use app\models\db\GroupAssertion;
+use app\models\db\Role;
 use app\models\db\search\GroupSearch;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * GroupController implements the CRUD actions for Groups model.
@@ -55,15 +58,41 @@ class GroupController extends Controller
     }
 
     /**
-     * Displays a single Groups model.
-     * @param integer $id
+     * Displays a single Gremien model.
+     * @param integer $id db identifier
+     * @param string $tab tab identifier
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView(int $id, string $tab = 'roles') : string
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+        return match($tab){
+            'meta' => $this->render('view-meta', [
+                'model' => $this->findModel($id),
+            ]),
+            'roles' => $this->render('view-roles', [
+                'model' => $this->findModel($id),
+            ])
+        };
+    }
+
+    public function actionAddRole(int $id) : string|Response
+    {
+        $group = $this->findModel($id);
+        $model = new GroupAssertion();
+
+        if($model->load(Yii::$app->request->post()) && $model->save()){
+            return $this->redirect(['group/view', 'id' => $id]);
+        }
+        $model->group_id = $id;
+
+        $groups = Group::find()->all();
+        $roles = Role::find()->all();
+
+        return $this->render('add-role', [
+            'model' => $model,
+            'groups' => $groups,
+            'roles' => $roles,
         ]);
     }
 

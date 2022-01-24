@@ -264,7 +264,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function isSuperAdmin() : bool
     {
-        return $this->getAdminRealmAssertions()->where(['realm_uid' => 'oa', 'user_id' => $this->id])->exists();
+        return $this->getAdminRealmAssertions()->where(['realm_uid' => 'oa'])->exists();
     }
 
     public function isRealmAdmin(string $realmUid) : bool
@@ -274,7 +274,7 @@ class User extends ActiveRecord implements IdentityInterface
             return true;
         }
         //might be better cached if traversed in php not in sql
-        return $this->getAdminRealmAssertions()->where(['realm_uid' => $realmUid, 'user_id' => $this->id])->exists();
+        return $this->getAdminRealmAssertions()->where(['realm_uid' => $realmUid])->exists();
     }
 
     public function isRealmMember(string $realmUid) : bool

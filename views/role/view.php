@@ -1,10 +1,11 @@
 <?php
 
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
-use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\db\Role */
+/* @var $dataProvider ActiveDataProvider */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Gremien'), 'url' => ['gremien/index']];
@@ -28,12 +29,17 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            'gremium_id',
+    <?= \yii\grid\GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            ['class' => \yii\grid\SerialColumn::class ],
+            [
+                'label' => 'Nutzer*in',
+                'value' => static fn($userRoleJoin) => $userRoleJoin['fullName'] . ' (' . $userRoleJoin['username'] . ')',
+            ],
+            'from:date',
+            'until:date',
+            // TODO: ActionColumn
         ],
     ]) ?>
 

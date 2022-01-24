@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\db\Realm;
+use app\models\db\RealmAssertion;
 use app\models\db\search\RealmSearch;
 use app\models\db\User;
 use Yii;
@@ -60,13 +61,62 @@ class RealmController extends Controller
     /**
      * Displays a single Realms model.
      * @param string $id
+     * @param string $tab
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView(string $id) : string
+    public function actionView(string $id, string $tab = 'meta') : string
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+        return match($tab){
+            'meta' => $this->render('view-meta', [
+                'model' => $this->findModel($id),
+            ]),
+            'member' => $this->render('view-member', [
+                'model' => $this->findModel($id),
+            ]),
+            'admin' => $this->render('view-admin', [
+                'model' => $this->findModel($id),
+            ])
+        };
+    }
+
+    public function actionAddAdmin(string $id) : string|Response
+    {
+        $group = $this->findModel($id);
+        $model = new RealmAssertion();
+
+        if($model->load(Yii::$app->request->post()) && $model->save()){
+            return $this->redirect(['realm/view', 'id' => $id]);
+        }
+        $model->realm_uid = $id;
+
+        $realms = Realm::find()->all();
+        $users = User::find()->innerJoin('realm_assertion', 'user_id = id')->where(['realm_uid' => $id])->all();
+
+        return $this->render('add-admin', [
+            'model' => $model,
+            'realms' => $realms,
+            'users' => $users,
+        ]);
+    }
+
+    public function actionAddMember(string $id) : string|Response
+    {
+        $group = $this->findModel($id);
+        $model = new RealmAssertion();
+
+        if($model->load(Yii::$app->request->post()) && $model->save()){
+            return $this->redirect(['realm/view', 'id' => $id]);
+        }
+        $model->realm_uid = $id;
+
+        $realms = Realm::find()->all();
+        $users = User::find()->all();
+
+        return $this->render('add-member', [
+            'model' => $model,
+            'realms' => $realms,
+            'users' => $users,
         ]);
     }
 
@@ -95,7 +145,7 @@ class RealmController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(string $id)
     {
         $model = $this->findModel($id);
 
@@ -115,7 +165,7 @@ class RealmController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(string $id)
     {
         $this->findModel($id)->delete();
 

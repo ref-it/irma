@@ -74,7 +74,7 @@ class NavBar4 extends \yii\bootstrap4\Widget
             ]
         ]);
         $roleLabel = 'unset';
-        if($isLoggedIn){
+        if($isLoggedIn && !$isSuperAdmin){
             // parse the mayor role of the user
             $adminRealms = $id->adminRealms;
             if(!empty($adminRealms)){

@@ -7,7 +7,9 @@ use app\models\db\RoleAssertion;
 use app\models\db\User;
 use Yii;
 use app\models\db\Role;
+use yii\db\Query;
 use yii\db\StaleObjectException;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,6 +26,19 @@ class RoleController extends Controller
     public function behaviors() : array
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => Yii::$app->user->identity->isSuperAdmin(),
+                        'actions' => ['create', 'update', 'delete'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['view', 'add-user'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
@@ -41,8 +56,20 @@ class RoleController extends Controller
      */
     public function actionView(int $id) : string
     {
+        $role = $this->findModel($id);
+        $q = (new Query())
+            ->from('user')
+            ->innerJoin('role_assertion', 'user_id = id')
+            ->where(['role_id' => $role->id]);
+        $dp = new \yii\data\ActiveDataProvider([
+            'query' => $q,
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $role,
+            'dataProvider' => $dp,
         ]);
     }
 
@@ -100,7 +127,13 @@ class RoleController extends Controller
         return $this->render('assert-user', [
             'role' => $role,
             'model' => $assertion,
-            'users' => User::find()->all()
+            'users' => User::find()
+                ->innerJoin('realm_assertion', 'user_id = id')
+                // only ppl in the realm of the gremium can be added
+                ->where(['realm_assertion.realm_uid' => $role->gremium->realm_uid])
+                // filter all users out wich are already in the role (dates are ignored rn)
+                ->andWhere(['not in', 'id', RoleAssertion::find()->select('user_id')->where(['role_id' => $role->id])])
+                ->all(),
         ]);
     }
 

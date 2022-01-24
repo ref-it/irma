@@ -7,7 +7,7 @@ use yii\bootstrap4\Html;
 use yii\data\ActiveDataProvider;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\db\Gremium */
+/* @var $model app\models\db\Group */
 
 
 echo $this->render('view', ['model' => $model, 'activeTabName' => 'roles']);
@@ -20,12 +20,23 @@ $dataProvider = new ActiveDataProvider([
     ],
 ]);
 
-echo Html::a(FAS::icon('plus') . ' Rolle erstellen', ['role/create', 'gremiumId' => $model->id], ['class' => ['btn', 'btn-success']]);
+echo Html::a(FAS::icon('plus') . ' Rolle in Gruppe hinzufügen', ['group/add-role', 'id' => $model->id], ['class' => ['btn', 'btn-success']]);
 echo \yii\grid\GridView::widget([
     'dataProvider' => $dataProvider,
     'columns' => [
         //['class' => SerialColumn::class],
-        'name',
+        [
+            'label' => 'Rollenname',
+            'attribute' => 'name',
+        ],
+        [
+            'label' => 'aus Gremium',
+            'attribute' => 'gremium_id',
+            'value' => static function(Role $role){
+                $gremium = $role->gremium;
+                return "$gremium->name ($gremium->realm_uid)";
+            }
+        ],
         [
             'label' => 'Nutzer*innen',
             'value' => static function (Role $role) {
