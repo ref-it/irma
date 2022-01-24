@@ -14,7 +14,7 @@ echo $this->render('view', ['model' => $model, 'activeTabName' => 'admin']);
 
 
 $dataProvider = new ActiveDataProvider([
-    'query' => $model->getAssertedUsers(),
+    'query' => $model->getAdminUsers(),
     'pagination' => [
         'pageSize' => 20,
     ],

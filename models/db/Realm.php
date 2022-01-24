@@ -96,4 +96,14 @@ class Realm extends ActiveRecord
         return $this->hasMany(User::class, ['id' => 'user_id'])->via('realmAssertions');
     }
 
+    public function getRealmAdminAssertions(): ActiveQuery
+    {
+        return $this->hasMany(RealmAdmin::class, ['realm_uid' => 'uid']);
+    }
+
+    public function getAdminUsers() : ActiveQuery
+    {
+        return $this->hasMany(User::class, ['id' => 'user_id'])->via('realmAdminAssertions');
+    }
+
 }

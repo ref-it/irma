@@ -24,7 +24,7 @@ class RealmAdmin extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules() :array
     {
         return [
             [['user_id', 'realm_uid'], 'required'],

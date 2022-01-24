@@ -30,10 +30,14 @@ class RealmAssertion extends ActiveRecord
     public function rules(): array
     {
         return [
+            [['user_id', 'realm_uid'], 'required'],
             [['user_id'], 'integer'],
-            [['realm_uid'], 'string', 'max' => 32],
+            [['realm_uid'], 'string', 'max' => 16],
+            [['user_id', 'realm_uid'], 'unique', 'targetAttribute' => ['user_id', 'realm_uid'],
+                'message' => 'Diese*r Nutzer*in ist bereits in diesem Realm'
+            ],
             [['realm_uid'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['realm_uid' => 'uid']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_uid' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 

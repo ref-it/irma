@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\db\Realm;
+use app\models\db\RealmAdmin;
 use app\models\db\RealmAssertion;
 use app\models\db\search\RealmSearch;
 use app\models\db\User;
@@ -83,10 +84,10 @@ class RealmController extends Controller
     public function actionAddAdmin(string $id) : string|Response
     {
         $group = $this->findModel($id);
-        $model = new RealmAssertion();
+        $model = new RealmAdmin();
 
         if($model->load(Yii::$app->request->post()) && $model->save()){
-            return $this->redirect(['realm/view', 'id' => $id]);
+            return $this->redirect(['realm/view', 'id' => $id, 'tab' => 'admin']);
         }
         $model->realm_uid = $id;
 
@@ -106,7 +107,7 @@ class RealmController extends Controller
         $model = new RealmAssertion();
 
         if($model->load(Yii::$app->request->post()) && $model->save()){
-            return $this->redirect(['realm/view', 'id' => $id]);
+            return $this->redirect(['realm/view', 'id' => $id, 'tab' => 'member']);
         }
         $model->realm_uid = $id;
 

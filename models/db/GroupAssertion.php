@@ -2,10 +2,12 @@
 
 namespace app\models\db;
 
+use yii\db\ActiveQuery;
+
 /**
  * This is the model class for table "group_assertions".
  *
- * @property string|null $user_id
+ * @property int|null $role_id
  * @property int|null $group_id
  *
  * @property Group $group
@@ -27,12 +29,12 @@ class GroupAssertion extends \yii\db\ActiveRecord
     {
         return [
             [['group_id'], 'integer'],
-            [['user_id'], 'integer'],
+            [['role_id'], 'integer'],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::class, 'targetAttribute' => ['group_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
-            [['group_id'], 'unique',
-                'targetAttribute' => ['group_id', 'user_id'],
-                'message' => 'Nutzer:in besitzt diese Gruppe bereits',
+            [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['role_id' => 'id']],
+            [['group_id', 'role_id'], 'unique',
+                'targetAttribute' => ['group_id', 'role_id'],
+                'message' => 'Diese Role besitzt diese Gruppe bereits',
             ],
         ];
     }
@@ -40,10 +42,10 @@ class GroupAssertion extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels() : array
     {
         return [
-            'user_id' => 'Nutzer',
+            'role_id' => 'Rolle',
             'group_id' => 'Gruppe',
         ];
     }
@@ -51,9 +53,9 @@ class GroupAssertion extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Group]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getGroup()
+    public function getGroup() : ActiveQuery
     {
         return $this->hasOne(Group::class, ['id' => 'group_id']);
     }
@@ -61,10 +63,10 @@ class GroupAssertion extends \yii\db\ActiveRecord
     /**
      * Gets query for [[User]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getUser()
+    public function getRoles()
     {
-        return $this->hasOne(User::class, ['id' => 'user_id']);
+        return $this->hasOne(Role::class, ['id' => 'role_id']);
     }
 }
