@@ -37,7 +37,7 @@ class NavBar4 extends \yii\bootstrap4\Widget
         /* @var User $id */
         $id = $user->getIdentity();
         $nameTag = $id->fullName ?? $id->username ?? 'Anonymous?!';
-        $isSuperAdmin = $id->isSuperAdmin();
+        $isSuperAdmin = $id?->isSuperAdmin() ?? false;
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav mr-auto'],
             'items' => [
