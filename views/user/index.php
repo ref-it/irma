@@ -1,7 +1,9 @@
 <?php
 
+use app\models\db\User;
 use rmrevin\yii\fontawesome\FAS;
 use yii\grid\ActionColumn;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -29,11 +31,19 @@ $this->params['breadcrumbs'][] = $this->title;
             //'id',
             'fullName',
             'username',
+            [
+                'label' => 'Realm(s) ' . FAS::icon('dragon')->size('xs'),
+                'value' => static function(User $user){
+                    return implode(', ', ArrayHelper::getColumn($user->realms, 'uid'));
+                },
+                'visible' => Yii::$app->user->identity->isSuperAdmin(),
+                'encodeLabel' => false,
+            ],
             'email:email',
             [
                 'label' => 'Status',
                 'attribute' => 'status',
-                'value' => static function(\app\models\db\User $user){
+                'value' => static function(User $user){
                     return match ($user->status){
                         0 => FAS::icon('hourglass-half') . ' Email nicht bestätigt',
                         1 => FAS::icon('check') . ' Email bestätigt',

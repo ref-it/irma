@@ -1,5 +1,6 @@
 <?php
 
+use app\models\db\Gremium;
 use app\models\db\Realm;
 use app\models\db\search\GremiumSearch;
 use rmrevin\yii\fontawesome\FAS;
@@ -33,15 +34,26 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'name',
             [
+                'attribute' => 'name',
+                'value' => static fn(Gremium $g) => Html::a($g->name, ['gremien/view', 'id' => $g->id]),
+                'format' => 'html',
+            ],[
                 'attribute' => 'realm_uid',
                 'filter' => ArrayHelper::map($realms, 'uid', 'long_name'),
                 'filterInputOptions' => ['prompt' => 'Alle Realms', 'class' => 'form-control', 'id' => null]
+            ],[
+                'attribute' => 'parent_gremium_id',
+                'value' => static function(Gremium $g) {
+                    if(empty($g->parent_gremium_id)){
+                        return null;
+                    }
+                    return Html::a($g->parentGremium?->name, ['gremien/view', 'id' => $g->parent_gremium_id]);
+                },
+                'format' => 'html',
+            ],[
+                'class' => ActionColumn::class
             ],
-            'parent_gremium_id',
-
-            ['class' => ActionColumn::class],
         ],
     ]); ?>
 

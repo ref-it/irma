@@ -30,7 +30,7 @@ class Group extends ActiveRecord
     public function rules(): array
     {
         return [
-            ['id', 'int'],
+            ['id', 'integer'],
             [['name'], 'string', 'max' => 64],
             [['realm_uid'], 'string', 'max' => 32],
             [['realm_uid'], 'exist', 'skipOnError' => true, 'targetClass' => Realm::class, 'targetAttribute' => ['realm_uid' => 'uid']],

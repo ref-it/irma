@@ -7,6 +7,7 @@ use app\models\db\GroupAssertion;
 use app\models\db\Role;
 use app\models\db\search\GroupSearch;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -99,9 +100,9 @@ class GroupController extends Controller
     /**
      * Creates a new Groups model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|Response
      */
-    public function actionCreate()
+    public function actionCreate(): string|Response
     {
         $model = new Group();
 
@@ -118,10 +119,10 @@ class GroupController extends Controller
      * Updates an existing Groups model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return string|Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id) : string|Response
     {
         $model = $this->findModel($id);
 
@@ -138,10 +139,10 @@ class GroupController extends Controller
      * Deletes an existing Groups model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return Response
+     * @throws NotFoundHttpException|StaleObjectException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id) : Response
     {
         $this->findModel($id)->delete();
 
@@ -155,7 +156,7 @@ class GroupController extends Controller
      * @return Group the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id): Group
     {
         if (($model = Group::findOne($id)) !== null) {
             return $model;

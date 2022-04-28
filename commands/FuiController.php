@@ -10,13 +10,14 @@ use yii\base\InvalidArgumentException;
 
 class FuiController extends \yii\console\Controller
 {
-    public function actionNew($realm){
+    public function actionNew($realm)
+    {
         $groups = [
             'ref-finanzen',
             'ref-finanzen-hv',
             'ref-finanzen-kv',
             'ref-finanzen-belege',
-            'stura'
+            'stura',
         ];
 
         if(Realm::findOne($realm) === null){

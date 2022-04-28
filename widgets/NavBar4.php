@@ -42,7 +42,7 @@ class NavBar4 extends \yii\bootstrap4\Widget
             'options' => ['class' => 'navbar-nav mr-auto'],
             'items' => [
                 [
-                    'label' => FAS::icon('globe') . ' Realms',
+                    'label' => FAS::icon('globe') . ' Realms ' . FAS::icon('dragon')->size('xs'),
                     'url' => ['realm/'],
                     'visible' => $isSuperAdmin,
                     'encode' => false,
@@ -60,20 +60,19 @@ class NavBar4 extends \yii\bootstrap4\Widget
                     'encode' => false,
                 ],
                 [
-                    'label' => FAS::icon('circle-notch') . ' Gruppen',
+                    'label' => FAS::icon('circle-notch') . ' Gruppen ' . FAS::icon('dragon')->size('xs'),
                     'url' => ['group/'],
                     'visible' => $isSuperAdmin,
                     'encode' => false,
                 ],
                 [
-                    'label' => FAS::icon('satellite-dish') . ' Domains',
+                    'label' => FAS::icon('satellite-dish') . ' Domains ' . FAS::icon('dragon')->size('xs'),
                     'url' => ['domain/'],
                     'visible' => $isSuperAdmin,
                     'encode' => false,
                 ],
             ]
         ]);
-        $roleLabel = 'unset';
         if($isLoggedIn && !$isSuperAdmin){
             // parse the mayor role of the user
             $adminRealms = $id->adminRealms;
@@ -104,7 +103,7 @@ class NavBar4 extends \yii\bootstrap4\Widget
                     'encode' => false,
                 ],
                 [
-                    'label' => FAS::icon('dragon'),
+                    'label' => FAS::icon('dragon') . ' Superadmin',
                     'visible' => $isSuperAdmin,
                     'encode' => false,
                     'url' => false,
