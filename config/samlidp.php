@@ -1,10 +1,13 @@
 <?php
 
-foreach (['DEV'] as $community){
-    $domain = env('SAML_SP_DOMAIN_' . $community, '');
+foreach (explode(',', env('SAML_COMMUNITIES')) as $community){
+    $domain = env('SAML_SP_DOMAIN_' . $community);
+    $secure = !str_contains($domain, 'localhost');
+    $protocol = "http" . ($secure? 's': '') . "://";
+    $port = $secure ? 443 : 80;
     //$entityId = "https://" . $domain . "/auth/metadata";
-    $SPs_config[base64_encode("http://" . $domain . "/auth/login")] = [
-        'destination' => "http://" . $domain . "/auth/login",
+    $SPs_config[base64_encode("$protocol$domain:$port/auth/login")] = [
+        'destination' => $protocol . $domain . "/auth/login",
         'logout' => "https://" . $domain . '/auth/logout',
         'certificate' => env('SAML_SP_CERT_' . $community, ''),
         'query_params' => false,
