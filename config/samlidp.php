@@ -2,13 +2,13 @@
 
 foreach (explode(',', env('SAML_COMMUNITIES')) as $community){
     $domain = env('SAML_SP_DOMAIN_' . $community);
-    $secure = !str_contains($domain, 'localhost');
+    $secure = !str_contains($domain, 'localhost') && !str_contains($domain, '127.0.0.1');
     $protocol = "http" . ($secure? 's': '') . "://";
-    $port = $secure ? 443 : 80;
+    $port = str_contains($domain, ':') ? "" : ( $secure ? ":443" : ":80");
     //$entityId = "https://" . $domain . "/auth/metadata";
-    $SPs_config[base64_encode("$protocol$domain:$port/auth/login")] = [
+    $SPs_config[base64_encode("$protocol$domain$port/auth/login")] = [
         'destination' => $protocol . $domain . "/auth/login",
-        'logout' => "https://" . $domain . '/auth/logout',
+        'logout' => $protocol . $domain . '/auth/logout',
         'certificate' => env('SAML_SP_CERT_' . $community, ''),
         'query_params' => false,
     ];

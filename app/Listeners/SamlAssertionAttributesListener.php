@@ -28,15 +28,15 @@ class SamlAssertionAttributesListener
         })->reject(function (string $dn){
             return !str_contains($dn, 'ou=Committees');
         })->toArray();
-
         //Issue: returns all Committees from all realms, SAML has no easy more segmented solution
-        $committeeQuery = Committee::query();
+        //Issue: you cannot query like DN in (x,y,z) - therefore multiple single finds
+        $committees = collect();
         foreach ($committeeDns as $committeeDn){
-            $committeeQuery->orWhere('dn', '=', $committeeDn);
+            $committees->add(Committee::find($committeeDn));
         }
-        $committees = $committeeQuery->get()->map(function ($item){
+        $committees = $committees->map(function ($item){
            return $item->getFirstAttribute('description');
-        });
+        })->toArray();
 
         $groupsQuery = Group::query()->orWhere('uniqueMember', '=', $userDn);
         foreach ($roles as $role){
