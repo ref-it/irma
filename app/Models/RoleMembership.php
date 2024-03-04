@@ -67,6 +67,14 @@ class RoleMembership extends Model
         );
     }
 
+    public function isPending() : bool {
+        if($this->isActive()){
+            $userGroups = $this->user->ldap()->groups();
+            return !$userGroups->exists($this->role_cn);
+        }
+        return false;
+    }
+
     public function scopeActive(Builder $query, Carbon $date = null)
     {
         if(is_null($date)){
