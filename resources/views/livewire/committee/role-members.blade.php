@@ -46,7 +46,7 @@
             <x-table.row>
                 <x-table.cell>
                     <span @class(["inline-block", "h-2", "w-2", "flex-shrink-0", "rounded-full",
-                        "bg-green-400" => $member->isActive(),
+                        "bg-green-400" => $member->isActive() && !$member->isPending(),
                         "bg-yellow-400" => $member->isPending(),
                         "bg-gray-200" => !$member->isActive(),
                     ]) aria-hidden="true"></span>
