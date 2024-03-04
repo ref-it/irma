@@ -60,10 +60,10 @@ class LdapSyncRoles extends Command
                         ->where('committee_dn', $committee->getDn())
                         ->where('role_cn', $role->getFirstAttribute('cn'))
                         ->get();
-                    $ldapMembers = $role->members();
-                    // delete all members so far
-                    $ldapMembers->detachAll();
                     $this->comment("  |-> " .$role->getDn());
+                    // delete all members so far
+                    $role->setAttribute('uniqueMember', ['']);
+                    $ldapMembers = $role->members();
                     foreach ($activeMemberships as $membership){
                         /** @var RoleMembership $membership */
                         // add only active members back
