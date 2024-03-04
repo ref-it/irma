@@ -29,7 +29,7 @@ return [
     'link_members' => 'Alle Mitglieder',
     'link_edit' => 'Bearbeiten',
     'membership_headline' => 'Nutzer*innen in der Rolle :name',
-    'membership_explanation' => 'Unten findest du die Liste der Nutzer*innen, die der Rolle zugeordnet sind. Es gibt ein Start- und ein Enddatum für die Zuordnung.',
+    'membership_explanation' => 'Unten findest du die Liste der Nutzer*innen, die der Rolle zugeordnet sind. Es gibt ein Start- und ein Enddatum für die Zuordnung. Es kann möglicherweise bis zum nächsten Tag dauern bis die Zuordnung aktiv ist.',
     'new_hint_shortname' => 'Gib hier einen kurzen Namen oder eine Abkürzung für die Rolle ein. Er sollte möglichst eindeutig sein. Z. B. HHV',
     'new_hint_longname' => ' Gib hier den vollen Namen ein. Z. B. Haushaltsverantwortung',
     'edit_explanation' => 'Rolle :name bearbeiten',

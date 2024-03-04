@@ -60,6 +60,11 @@ class RoleMembership extends Model
         return $this->belongsTo(User::class, 'username', 'username');
     }
 
+    public function ldapRole() : \App\Ldap\Role
+    {
+        return \App\Ldap\Role::find("cn=$this->role_cn,$this->committee_dn");
+    }
+
     public function isActive() : bool {
         return Carbon::today()->betweenIncluded(
             $this->from->format('Y-m-d'),
@@ -70,7 +75,7 @@ class RoleMembership extends Model
     public function isPending() : bool {
         if($this->isActive()){
             $userGroups = $this->user->ldap()->groups();
-            return !$userGroups->exists($this->role_cn);
+            return !$userGroups->exists($this->ldapRole());
         }
         return false;
     }
