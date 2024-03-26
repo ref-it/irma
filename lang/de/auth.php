@@ -15,6 +15,7 @@ return [
 
     'failed' => 'Unbekannte Anmeldedaten.',
     'password' => 'Das angegebene Passwort ist inkorrekt.',
+    'logout_confirmation' => 'Aktuell eingeloggt als :user. Möchtest du dich wirklich ausloggen?',
     'throttle' => 'Zu viele Anmeldeversuche. Bitte versuche es in :seconds Sekunden nochmal.',
     'secure_area_text' => 'Dies ist ein geschützter Bereich der Anwendung. Bitte bestätige zunächst dein Passwort.',
     'forgot_password_text' => 'Du hast dein Passwort vergessen? Das ist kein Problem! Teile uns einfach deine E-Mail-Adresse mit und wir senden dir einen Link zum Zurücksetzen des Passworts zu, mit dem du ein neues Passwort setzen kannst.',

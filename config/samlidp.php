@@ -74,7 +74,7 @@ return [
     // All of the Laravel SAML IdP event / listener mappings.
     'events' => [
         CodeGreenCreative\SamlIdp\Events\Assertion::class => [],
-        Illuminate\Auth\Events\Logout::class => [CodeGreenCreative\SamlIdp\Listeners\SamlLogout::class],
+        #Illuminate\Auth\Events\Logout::class => [CodeGreenCreative\SamlIdp\Listeners\SamlLogout::class],
         Illuminate\Auth\Events\Authenticated::class => [CodeGreenCreative\SamlIdp\Listeners\SamlAuthenticated::class],
         Illuminate\Auth\Events\Login::class => [CodeGreenCreative\SamlIdp\Listeners\SamlLogin::class],
     ],

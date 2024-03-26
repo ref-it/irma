@@ -7,6 +7,7 @@ use App\Ldap\Community;
 use App\Ldap\Domain;
 use App\Ldap\Group;
 use App\Ldap\Role;
+use App\Models\PassportClient;
 use App\Models\RoleMembership;
 use App\Models\User;
 use App\Policies\CommitteePolicy;
@@ -21,6 +22,7 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Lang;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -48,6 +50,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Passport::useClientModel(PassportClient::class);
+
         VerifyEmail::toMailUsing(static function (object $notifiable, string $url) {
             return (new MailMessage)
                 ->subject(Lang::get('auth.verification_mail_subject'))

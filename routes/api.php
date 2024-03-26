@@ -13,7 +13,19 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::middleware('auth:api')->group(function (){
+    Route::any('user', \App\Http\Controllers\Api\SocialiteUser::class);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::middleware('scope:committees')->group(function (){
+        Route::any('committees', [\App\Http\Controllers\Api\Committees::class, 'all']);
+        Route::any('committees/{community_uid}', [\App\Http\Controllers\Api\Committees::class, 'fromCommunity']);
+    });
+
+    Route::middleware('scope:groups')->group(function (){
+        Route::any('groups', [\App\Http\Controllers\Api\Groups::class, 'all']);
+        Route::any('groups/{community_uid}', [\App\Http\Controllers\Api\Groups::class, 'fromCommunity']);
+    });
+
 });
+
+
