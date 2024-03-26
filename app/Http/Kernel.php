@@ -7,6 +7,8 @@ use App\Http\Middleware\CommunityAdmin;
 use App\Http\Middleware\CommunityModerator;
 use App\Http\Middleware\SuperAdminMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Laravel\Passport\Http\Middleware\CheckForAnyScope;
+use Laravel\Passport\Http\Middleware\CheckScopes;
 
 class Kernel extends HttpKernel
 {
@@ -72,5 +74,7 @@ class Kernel extends HttpKernel
         'communityAdmin' => CommunityAdmin::class,
         'communityMod' => CommunityModerator::class,
         'communityMember' => CommunityMember::class,
+        'scopes' => CheckScopes::class,
+        'scope' => CheckForAnyScope::class,
     ];
 }

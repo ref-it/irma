@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Passport::tokensCan([
+            'profile' => 'Grant Profile Info Access',
+            'committees' => 'Grant Committee Access',
+            'groups' => 'Grant Group Access',
+            'iban' => 'Grant IBAN Access',
+            'address' => 'Grant Address Access'
+        ]);
+
+        Passport::setDefaultScope(['profile']);
+
         Password::defaults(static function () {
             return Password::min(12)
                 ->letters()

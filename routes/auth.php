@@ -52,6 +52,9 @@ Route::middleware('auth')->group(function () {
     Route::any('change-password', ChangePassword::class)
         ->name('password.change');
 
-    Route::any('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
+    Route::get('logout', [AuthenticatedSessionController::class, 'confirmLogout'])
+        ->name('logout.confirm');
 
 });
