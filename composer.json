@@ -1,10 +1,10 @@
 {
-    "name": "laravel/laravel",
+    "name": "openadministration/stumv",
     "type": "project",
     "version": "1.1.0",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "description": "ldap based membership management for student bodys",
+    "keywords": ["ldap", "laravel", "memership-management", "student-body"],
+    "license": "AGPL",
     "require": {
         "php": "^8.2",
         "ext-ldap": "*",
