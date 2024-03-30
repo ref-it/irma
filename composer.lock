@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f35ccfc77deef05426ecbcab5ab89d2",
+    "content-hash": "ba2712b2a747f77f25e698f70460266b",
     "packages": [
         {
             "name": "blade-ui-kit/blade-icons",
@@ -530,16 +530,16 @@
         },
         {
             "name": "directorytree/ldaprecord",
-            "version": "v3.6.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DirectoryTree/LdapRecord.git",
-                "reference": "a9eb49ebc572b4be01c9a32df7784682d4f22440"
+                "reference": "06837ae8db8591cdc7f5c9e7c390e65ab7aa5dcb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord/zipball/a9eb49ebc572b4be01c9a32df7784682d4f22440",
-                "reference": "a9eb49ebc572b4be01c9a32df7784682d4f22440",
+                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord/zipball/06837ae8db8591cdc7f5c9e7c390e65ab7aa5dcb",
+                "reference": "06837ae8db8591cdc7f5c9e7c390e65ab7aa5dcb",
                 "shasum": ""
             },
             "require": {
@@ -602,7 +602,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-27T22:10:46+00:00"
+            "time": "2024-03-18T16:12:54+00:00"
         },
         {
             "name": "directorytree/ldaprecord-laravel",
