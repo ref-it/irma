@@ -17,13 +17,13 @@ Route::middleware('auth:api')->group(function (){
     Route::any('user', \App\Http\Controllers\Api\SocialiteUser::class);
 
     Route::middleware('scope:committees')->group(function (){
-        Route::any('committees', [\App\Http\Controllers\Api\Committees::class, 'all']);
-        Route::any('committees/{community_uid}', [\App\Http\Controllers\Api\Committees::class, 'fromCommunity']);
+        Route::any('my/committees', [\App\Http\Controllers\Api\Committees::class, 'all']);
+        Route::any('my/committees/{community_uid}', [\App\Http\Controllers\Api\Committees::class, 'fromCommunity']);
     });
 
     Route::middleware('scope:groups')->group(function (){
-        Route::any('groups', [\App\Http\Controllers\Api\Groups::class, 'all']);
-        Route::any('groups/{community_uid}', [\App\Http\Controllers\Api\Groups::class, 'fromCommunity']);
+        Route::any('my/groups', [\App\Http\Controllers\Api\Groups::class, 'all']);
+        Route::any('my/groups/{community_uid}', [\App\Http\Controllers\Api\Groups::class, 'fromCommunity']);
     });
 
 });
