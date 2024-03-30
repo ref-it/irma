@@ -18,6 +18,10 @@ class MembershipPolicy
         return $user->can('moderator', [$committee, $community]);
     }
 
+    public function terminate(User $user, RoleMembership $membership, Committee $committee, Community $community) : bool {
+        return $user->can('moderator', [$committee, $community]);
+    }
+
     public function delete(User $user, RoleMembership $membership, Committee $committee, Community $community) : bool {
         return $user->can('moderator', [$committee, $community]);
     }
