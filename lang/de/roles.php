@@ -35,5 +35,7 @@ return [
     'edit_explanation' => 'Rolle :name bearbeiten',
     'edit_title' => 'Rolle bearbeiten',
     'edit_heading' => 'Rolle bearbeiten',
-    'edit_success' => 'Rolle erfolgreich bearbeitet'
+    'edit_success' => 'Rolle erfolgreich bearbeitet',
+    'membership-edit_headline' => 'Rollenzuordnung anpassen',
+    'membership-edit_explanation' => 'Hier kannst du die Zuordnung der/das Nutzer:in bearbeiten. Das Start- und Enddatum begrenzt die Rollenzuordnung. Liegen die Daten in der Zukunft, wird die Zuordnung dann erst begonnen oder beendet. Beschlussdatum und Kommentar sind optionale Informationen, die lediglich der Beschreibung dienen.',
 ];
