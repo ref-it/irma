@@ -13,20 +13,27 @@ class Groups extends Controller
 {
     public function all(Request $request)
     {
-        $committees = $this->prepareData(function (string $dn){
+        // no filter applied
+        $groups = $this->prepareData(function (string $dn){
             return true;
         });
-        return response()->json($committees);
+        return response()->json($groups);
     }
 
     public function fromCommunity(Request $request, string $community_uid)
     {
-        $committees = $this->prepareData(function (string $dn) use ($community_uid){
+        // only one specific community as filter
+        $groups = $this->prepareData(function (string $dn) use ($community_uid){
             return str_contains($dn, "ou=Committees,ou=$community_uid");
         });
-        return response()->json($committees);
+        return response()->json($groups);
     }
 
+    /**
+     * Returns all Group memberships (not roles) as array, can be filtered
+     * @param callable $filter the filter which should be applied to the collected result
+     * @return array the fetched groups
+     */
     private function prepareData(callable $filter) : array
     {
         /** @var User $ldapUser */
@@ -41,14 +48,13 @@ class Groups extends Controller
         }
         $groups = $groupsQuery->get();
 
-        $groupDns = $groups->map(function ($item){
+        // returns the (filtered) group DNs as array
+        return $groups->map(function ($item){
             return $item->getDn();
         })->reject(function (string $dn){
             // throw out the committee roles. only memberships and permissions inside
             return str_contains($dn, 'ou=Committees');
         })->filter($filter)
         ->toArray();
-
-        return $groupDns;
     }
 }
