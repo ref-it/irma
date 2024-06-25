@@ -17,7 +17,6 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.0",
         "laravel/passport": "^11.10",
-
         "livewire/livewire": "^3.0",
         "owenvoke/blade-fontawesome": "^2.0"
     },
