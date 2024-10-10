@@ -30,10 +30,12 @@ class NewModerator extends Component
         $c = Community::findOrFailByUid($this->realm_uid);
         $userList = $c->membersGroup()->members()->get();
         $moderators = $c->moderatorsGroup()->members()->get();
-
+        // baseCollection does like strings in contains, ldapCollection does not...
+        $moderatorDns = $moderators->modelDns()->toBase();
+        $selectable_users = $userList->filter(fn ($user) => $moderatorDns->doesntContain($user->getDn()));
         return view('livewire.realm.new-moderator', [
             'community' => $c,
-            'selectable_users' => $userList->except($moderators->keys()),
+            'selectable_users' => $selectable_users,
         ]);
     }
 
