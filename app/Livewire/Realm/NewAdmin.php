@@ -27,9 +27,11 @@ class NewAdmin extends Component
         $community = Community::findOrFailByUid($this->realm_uid);
         $userList =  $community->membersGroup()->members()->get();
         $admins = $community->adminsGroup()->members()->get();
+        $adminDns = $admins->modelDns()->toBase();
+        $selectable_users = $userList->filter(fn ($user) => $adminDns->doesntContain($user->getDn()));
 
         return view('livewire.realm.new-admin', [
-            'selectable_users' => $userList->except($admins->keys()),
+            'selectable_users' => $selectable_users,
             'community' => $community,
         ])->title(__('realms.admins_new_title', ['realm' => $this->realm_uid]));
     }
