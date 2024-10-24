@@ -1,9 +1,6 @@
 <button wire:navigate role="link"
     {{ $attributes->merge([
-        'class' => "inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm
-        hover:bg-indigo-500 disabled:hover:bg-indigo-600
-        focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600
-        disabled:opacity-25 disabled:cursor-not-allowed",
+        'class' => "flex gap-x-1.5 items-center px-2 py-1 -my-1 rounded-md shadow-sm text-white bg-emerald-800 enabled:hover:bg-emerald-700 disabled:opacity-25 disabled:cursor-not-allowed",
     ]) }}
 >
     @if($attributes->has('icon-leading'))

@@ -1,8 +1,8 @@
 <div class="flex-col space-y-4">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ __('realms.groups_headline') }}</h1>
-            <p class="mt-2 text-sm text-gray-700">
+            <h1 class="text-base font-semibold leading-6 text-zinc-800 dark:text-white">{{ __('realms.groups_headline') }}</h1>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
                 {{  __('realms.groups_explanation') }}
             </p>
         </div>
@@ -24,24 +24,19 @@
             <x-table.heading sortable wire:click="sortBy('description')" :direction="$sortField === 'description' ? $sortDirection : null">
                 {{ __('Full Name') }}
             </x-table.heading>
-            <x-table.heading/>
-            <x-table.heading/>
+            <x-table.heading />
         </x-slot>
         @forelse($groupSlice->items() as $group)
             <x-table.row>
                 <x-table.cell>{{ $group->getFirstAttribute('cn') }}</x-table.cell>
                 <x-table.cell>{{ $group->getFirstAttribute('description') }}</x-table.cell>
-                <x-table.cell>
-                    <x-link href="{{ route('realms.groups.roles', ['uid' => $realm_uid, 'cn' => $group->getFirstAttribute('cn')]) }}">
+                <x-table.cell class="flex gap-2 float-right">
+                    <x-button.link-primary href="{{ route('realms.groups.roles', ['uid' => $realm_uid, 'cn' => $group->getFirstAttribute('cn')]) }}">
                         <x-fas-user-tag/> {{ __('groups.manage_roles') }}
-                    </x-link>
-                </x-table.cell>
-                <x-table.cell>
-                    <x-link href="{{ route('realms.groups.edit', ['uid' => $realm_uid, 'cn' => $group->getFirstAttribute('cn')]) }}">
+                    </x-button.link-primary>
+                    <x-button.link-primary href="{{ route('realms.groups.edit', ['uid' => $realm_uid, 'cn' => $group->getFirstAttribute('cn')]) }}">
                         <x-fas-pencil/> {{ __('groups.link_edit') }}
-                    </x-link>
-                </x-table.cell>
-                <x-table.cell>
+                    </x-button.link-primary>
                     <x-button.link-danger icon-leading="fas-trash"
                         wire:click="deletePrepare('{{ $realm_uid }}', '{{ $group->getFirstAttribute('cn')}}')"
                     >

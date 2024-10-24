@@ -1,7 +1,7 @@
 <x-livewire-form>
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ __('realms.add_members_to_role_heading') }}</h1>
+            <h1 class="text-base font-semibold leading-6 text-zinc-800 dark:text-white">{{ __('realms.add_members_to_role_heading') }}</h1>
         </div>
     </div>
     <x-input.group :label="__('Short Rolename')" wire:model="cn" disabled/>

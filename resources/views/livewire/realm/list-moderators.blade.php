@@ -1,8 +1,8 @@
 <div class="flex-col space-y-4">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ __('realms.mods_heading', ['name' => $community->getFirstAttribute('description'), 'uid' => $community_name]) }}</h1>
-            <p class="mt-2 text-sm text-gray-700">{{ __('realms.mods_explanation') }}</p>
+            <h1 class="text-base font-semibold leading-6 text-zinc-800 dark:text-white">{{ __('realms.mods_heading', ['name' => $community->getFirstAttribute('description'), 'uid' => $community_name]) }}</h1>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">{{ __('realms.mods_explanation') }}</p>
         </div>
         <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <x-button.link-primary :href="route('realms.mods.new', ['uid' => $community_name])" class="flex"
@@ -33,7 +33,7 @@
             <x-table.row>
                 <x-table.cell>{{ $realm_member->cn[0] }}</x-table.cell>
                 <x-table.cell>{{ $realm_member->uid[0] }}</x-table.cell>
-                <x-table.cell>
+                <x-table.cell class="flex gap-2 float-right">
                     <x-button.link-danger icon-leading="fas-trash"
                         :disabled="auth()->user()->cannot('remove_moderator', $community)"
                         wire:click="deletePrepare('{{ $realm_member->uid[0] }}')">{{ __('Remove Moderator') }}

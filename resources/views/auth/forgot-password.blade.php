@@ -1,6 +1,7 @@
 <x-guest-layout>
     <x-auth-card>
-        <div class="mb-4 text-sm text-gray-600">
+        <h2 class="font-bold text-zinc-800 dark:text-white mb-4">{{ __('Reset Password') }}</h2>
+        <div class="mb-4 text-sm text-zinc-600 dark:text-zinc-300">
             {{ __('auth.forgot_password_text') }}
         </div>
 
@@ -13,7 +14,7 @@
             <x-input.group id="mail" name="mail" :label="__('Email')" :value="old('email')" required/>
 
             <div class="flex gap-x-6 items-center justify-end mt-5">
-                <a href="{{ route('login') }}" class="text-sm font-semibold leading-6 text-gray-900">{{  __('Cancel') }}</a>
+                <a href="{{ route('login') }}" class="text-sm font-semibold leading-6 text-zinc-800 dark:text-white">{{  __('Cancel') }}</a>
                 <x-button.primary type="submit">
                     {{ __('Send Reset Link') }}
                 </x-button.primary>

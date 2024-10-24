@@ -42,6 +42,8 @@ class Committees extends Controller
         foreach ($committeeDns as $committeeDn){
             $committees->add(Committee::find($committeeDn));
         }
+        // returns array of committees like "stura" => "Studierendenrat"
+        // FIXME: has issues with all() -> not distinguishable in multi realm setup
         return $committees
             ->keyBy(function ($item){
                 // change key

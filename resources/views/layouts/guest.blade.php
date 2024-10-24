@@ -14,9 +14,13 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     @livewireScripts
 </head>
-<body class="min-h-screen flex flex-col justify-between font-sans text-gray-900 bg-gray-100 antialiased">
-    <span></span>
-    <main class="">
+<body class="h-screen lg:grid-cols-1 lg:grid-rows-[4rem_1fr_3rem]">
+    <div class="grow bg-zinc-50 dark:bg-zinc-800">
+        <a class="flex h-16 px-6 shrink-0 items-center bg-zinc-800 border-b border-zinc-900 shadow-sm shadow-black/20" href="/">
+            <img class="h-8 w-auto max-w-60" src="{{ asset('img/logo.svg') }}" alt="{{ config('app.name') }}">
+        </a>
+    </div>
+    <main class="row-start-2">
         {{ $slot }}
     </main>
     @include('layouts.footer')

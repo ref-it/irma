@@ -1,8 +1,8 @@
 <x-livewire-form>
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ __('realms.domains_edit_explanation') }}</h1>
-            <p class="mt-2 text-sm text-gray-700">
+            <h1 class="text-base font-semibold leading-6 text-zinc-800 dark:text-white">{{ __('realms.domains_edit_explanation') }}</h1>
+            <p class="mt-2 text-sm text-zinc-600 text-zinc-300">
                 {{  __('realms.domains_edit_explanation') }}
             </p>
         </div>

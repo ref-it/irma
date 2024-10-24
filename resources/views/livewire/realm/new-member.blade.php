@@ -1,8 +1,8 @@
 <x-livewire-form>
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ __('realms.members_new_heading') }}</h1>
-            <p class="mt-2 text-sm text-gray-700">{{ __('realms.members_new_explanation') }}</p>
+            <h1 class="text-base font-semibold leading-6 text-zinc-800 dark:text-white">{{ __('realms.members_new_heading') }}</h1>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">{{ __('realms.members_new_explanation') }}</p>
         </div>
     </div>
     <x-select wire:model.live="dn" class="mt-2">

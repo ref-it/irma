@@ -15,19 +15,19 @@
             {{ $label }}
         @elseif($attributes->has('label'))
             {{-- or with the attributes like <x-input.group label="Upload" label.class="red" ...> --}}
-            <label {{ $attributes->thatStartWith('label.')->merge(['class' => 'block text-sm font-medium leading-6 text-gray-900']) }}>
+            <label {{ $attributes->thatStartWith('label.')->merge(['class' => 'block text-sm font-medium leading-6 text-zinc-800 dark:text-white']) }}>
                 {{ $attributes->get('label') }}
             </label>
         @endif
         @isset($note)
-            <span class="text-sm leading-6 text-gray-500" id="{{ $id }}-note">{{ $note }}</span>
+            <span class="text-sm leading-6 text-zinc-500 dark:text-zinc-300" id="{{ $id }}-note">{{ $note }}</span>
         @endisset
     </div>
 
     <input {{ $attributes->merge([
-        'class' => 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
-        disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200
-        placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
+        'class' => 'block w-full rounded-md border-0 py-1.5 text-zinc-800 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-zinc-600
+        disabled:cursor-not-allowed disabled:bg-zinc-50 dark:disabled:bg-zinc-700 disabled:text-zinc-500 dark:disabled:text-zinc-300 disabled:ring-zinc-200 dark:disabled:ring-zinc-600
+        placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-emerald-800 sm:text-sm sm:leading-6',
         'type' => 'text',
         'disabled' => $attributes->has('disabled') // enforce disabled attribute being there (?)
     ]) }}/>

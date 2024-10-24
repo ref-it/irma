@@ -1,8 +1,8 @@
 <div class="flex-col space-y-4">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ __('realms.list_headline') }}</h1>
-            <p class="mt-2 text-sm text-gray-700">
+            <h1 class="text-base font-semibold leading-6 text-zinc-800 dark:text-white">{{ __('realms.list_headline') }}</h1>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
                 {{  __('realms.list_explanation') }}
                 <x-link class="inline-flex items-baseline" href="mailto:{{ config('app.help_contact_mail') }}">
                     <x-fas-envelope class="w-3 h-3 items-baseline ml-1"/> {{ __('Contact us') }}
@@ -31,28 +31,22 @@
             >
                 {{ __('Name') }}
             </x-table.heading>
-            <x-table.heading/>
-            <x-table.heading/>
-            <x-table.heading/>
+            <x-table.heading />
         </x-slot>
         @php /** @var \App\Ldap\Community $realm */ @endphp
         @forelse($realmSlice->items() as $realm)
             <x-table.row>
                 <x-table.cell>{{ $realm->getShortCode() }}</x-table.cell>
                 <x-table.cell>{{ $realm->getLongName() }}</x-table.cell>
-                <x-table.cell>
-                    <x-link :disabled="!($canEnter === true || Arr::has($canEnter, $realm->getShortCode()))"
+                <x-table.cell class="flex gap-2 float-right">
+                    <x-button.link-primary :disabled="!($canEnter === true || Arr::has($canEnter, $realm->getShortCode()))"
                         href="#" wire:click="enter('{{ $realm->getShortCode() }}')" >
                         <x-fas-dungeon/> {{ __('Enter') }}
-                    </x-link>
-                </x-table.cell>
-                <x-table.cell>
-                    <x-link :disabled="Auth::user()->cannot('edit', $realm)"
+                    </x-button.link-primary>
+                    <x-button.link-primary :disabled="Auth::user()->cannot('edit', $realm)"
                         href="{{ route('realms.edit', ['uid' => $realm->getShortCode()]) }}">
                         <x-fas-pencil/> {{ __('Edit') }}
-                    </x-link>
-                </x-table.cell>
-                <x-table.cell>
+                    </x-button.link-primary>
                     <x-button.link-danger icon-leading="fas-trash"
                         :disabled="Auth::user()->cannot('delete', $realm)"
                         wire:click="deletePrepare('{{ $realm->getShortCode() }}')">

@@ -1,11 +1,11 @@
 @unless ($breadcrumbs->isEmpty())
     <nav class="container mx-auto">
-        <ol class="flex flex-wrap text-sm text-gray-800">
+        <ol class="flex flex-wrap text-sm text-zinc-800 dark:text-white">
             @foreach ($breadcrumbs as $breadcrumb)
 
                 @if ($breadcrumb->url && !$loop->last)
                     <li>
-                        <a wire:navigate href="{{ $breadcrumb->url }}" class="text-blue-600 hover:text-blue-900 hover:underline focus:text-blue-900 focus:underline">
+                        <a wire:navigate href="{{ $breadcrumb->url }}" class="link">
                             {{ $breadcrumb->title }}
                         </a>
                     </li>

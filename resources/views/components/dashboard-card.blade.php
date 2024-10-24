@@ -6,12 +6,12 @@
     'href'
 ])
 
-<div @class(["group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500",
+<div @class(["group relative bg-white dark:bg-zinc-700 dark:hover:bg-zinc-600 ring-1 ring-zinc-300 dark:ring-zinc-500 p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-emerald-700 shadow-sm rounded-lg",
         'hover:bg-gray-50' => !$disabled
     ])>
     <div>
       <span @class([
-        "inline-flex rounded-lg p-4 ring-4 ring-white",
+        "inline-flex rounded-lg p-4 border border-black/10",
         $color => !$disabled,
         "bg-gray-100 text-gray-400" => $disabled
       ])>
@@ -20,8 +20,8 @@
     </div>
     <div class="mt-8">
         <h3 @class(["text-base font-semibold leading-6",
-                "text-gray-900" => !$disabled,
-                "text-gray-400" => $disabled,
+                "text-zinc-800 dark:text-white" => !$disabled,
+                "text-zinc-400 dark:text-zinc-500" => $disabled,
             ])>
             @if(!$disabled)
                 <a href="{{ $href }}" class="focus:outline-none">
@@ -38,8 +38,8 @@
 
         </h3>
         <p @class(["mt-2 text-sm",
-            "text-gray-500" => !$disabled,
-            "text-gray-400" => $disabled,
+            "text-zinc-500 dark:text-zinc-300" => !$disabled,
+            "text-zinc-400 dark:text-zinc-500" => $disabled,
         ])>
             {{ $slot }}
         </p>

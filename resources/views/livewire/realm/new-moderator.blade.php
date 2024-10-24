@@ -1,8 +1,8 @@
 <x-livewire-form>
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ __('realms.new_mod_headline', ['name' => $community->getFirstAttribute('description'), 'uid' => $realm_uid]) }}</h1>
-            <p class="mt-2 text-sm text-gray-700">{{ __('realms.new_mod_explanation') }}</p>
+            <h1 class="text-base font-semibold leading-6 text-zinc-800 dark:text-white">{{ __('realms.new_mod_headline', ['name' => $community->getFirstAttribute('description'), 'uid' => $realm_uid]) }}</h1>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">{{ __('realms.new_mod_explanation') }}</p>
         </div>
     </div>
 

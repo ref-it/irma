@@ -75,18 +75,4 @@ Route::middleware(['auth', 'verified'])->group(function (){
     // end auth verified
 });
 
-
-// guest routes
-Route::get('about', function (){
-    return redirect(config('app.about_url'));
-})->name('about');
-
-Route::get('privacy', function (){
-    return redirect(config('app.privacy_url'));
-})->name('privacy');
-
-Route::get('terms', function (){
-    return redirect(config('app.terms_url'));
-})->name('terms');
-
 require __DIR__.'/auth.php';

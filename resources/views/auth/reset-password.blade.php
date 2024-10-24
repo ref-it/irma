@@ -3,7 +3,7 @@
 
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
-        <h2 class="font-bold text-gray-900 sm:truncate sm:tracking-tight">{{ __('Reset Password') }}</h2>
+        <h2 class="font-bold text-zinc-800 dark:text-white">{{ __('Reset Password') }}</h2>
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
 

@@ -1,13 +1,13 @@
 <div class="flex-col space-y-4">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900 inline-flex items-center">
+            <h1 class="text-base font-semibold leading-6 text-zinc-800 dark:text-white inline-flex items-center">
                 {{ __('roles.membership_headline', ['name' => $role->getFirstAttribute('description')]) }}
                 <x-link :href="route('committees.roles.edit', ['uid' => $uid, 'cn' => $cn, 'ou' => $ou])" >
                     <x-fas-pencil class="mx-2"/>
                 </x-link>
             </h1>
-            <p class="mt-2 text-sm text-gray-700">{{ __('roles.membership_explanation') }}</p>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">{{ __('roles.membership_explanation') }}</p>
         </div>
         <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <x-button.link-primary

@@ -1,7 +1,7 @@
 <div>
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ __('Profile') }}</h1>
+            <h1 class="text-base font-semibold leading-6 text-zinc-800 dark:text-white">{{ __('Profile') }}</h1>
         </div>
     </div>
     <x-livewire-form :abort_route="null" wire:submit="save">

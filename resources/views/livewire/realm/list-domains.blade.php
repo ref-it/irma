@@ -1,8 +1,8 @@
 <div class="flex-col space-y-4">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ __('realms.domains_headline') }}</h1>
-            <p class="mt-2 text-sm text-gray-700">{{ __('realms.domains_explanation') }}</p>
+            <h1 class="text-base font-semibold leading-6 text-zinc-800 dark:text-white">{{ __('realms.domains_headline') }}</h1>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">{{ __('realms.domains_explanation') }}</p>
         </div>
         <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <x-button.link-primary :href="route('realms.domains.new', ['uid' => $uid])" icon-leading="fas-plus" :disabled="auth()->user()->cannot('create', \App\Ldap\Community::class)">

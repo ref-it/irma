@@ -1,5 +1,5 @@
 <x-auth-card>
-    <h2 class="font-bold text-gray-900 sm:truncate sm:tracking-tight">{{ __('user.register') }}</h2>
+    <h2 class="font-bold text-zinc-800 dark:text-white">{{ __('user.register') }}</h2>
     <x-livewire-form>
         <!-- Email Address -->
         <x-input.group wire:model.blur="email" autofocus>

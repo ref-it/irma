@@ -4,7 +4,7 @@
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
         <!-- Validation Errors -->
-        <h2 class="font-bold text-gray-900 sm:truncate sm:tracking-tight">{{ __('Login') }}</h2>
+        <h2 class="font-bold text-zinc-800 dark:text-white">{{ __('Login') }}</h2>
         <form method="POST" action="{{ route('login') }}">
             @csrf
             @samlidp
@@ -17,14 +17,14 @@
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-emerald-800 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
+                    <span class="ml-2 text-sm text-zinc-600 dark:text-zinc-300">{{ __('Remember me') }}</span>
                 </label>
             </div>
 
             <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
-                    <a class="underline text-sm text-indigo-500 hover:text-indigo-700" href="{{ route('password.request') }}">
+                    <a class="link text-sm mr-auto" href="{{ route('password.request') }}">
                         {{ __('Forgot your password?') }}
                     </a>
                 @endif
@@ -34,9 +34,9 @@
                 </x-button.primary>
             </div>
         </form>
-        <x-slot:footer class="text-sm space-x-1">
-            <span class="text-gray-500">{{ __("Don't have an account?") }}</span>
-            <a class="underline text-indigo-600 hover:text-indigo-700" href="{{ route('register') }}">
+        <x-slot:footer class="text-sm space-x-1 text-center mt-8">
+            <span class="text-zinc-500 dark:text-zinc-300">{{ __("Don't have an account?") }}</span>
+            <a class="link" href="{{ route('register') }}">
                 {{ __('Sign up and get started!') }}
             </a>
         </x-slot:footer>

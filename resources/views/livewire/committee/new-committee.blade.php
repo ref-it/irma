@@ -1,7 +1,7 @@
 <x-livewire-form>
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ __('New Committee') }}</h1>
+            <h1 class="text-base font-semibold leading-6 text-zinc-800 dark:text-white">{{ __('New Committee') }}</h1>
         </div>
     </div>
     <x-select :label="__('Parent Committee')" wire:model.live="parent_dn">

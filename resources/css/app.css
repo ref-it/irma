@@ -1,3 +1,71 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@import './fonts.css';
+
+:root {
+    --livewire-progress-bar-color: #ffcc00;
+}
+
+html {
+    @apply h-screen;
+    font-size: 18px;
+}
+
+body {
+    @apply h-screen bg-zinc-50 dark:bg-zinc-800 h-full w-full grid grid-cols-1 lg:grid-cols-[18rem_1fr] lg:grid-rows-[1fr_3rem] overflow-hidden;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+[multiple],
+[type="date"],
+[type="datetime-local"],
+[type="email"],
+[type="month"],
+[type="number"],
+[type="password"],
+[type="search"],
+[type="tel"],
+[type="text"],
+[type="time"],
+[type="url"],
+[type="week"],
+select,
+textarea {
+    @apply dark:bg-zinc-800 dark:text-white;
+}
+
+[type="checkbox"],
+[type="radio"] {
+    @apply dark:bg-zinc-600 dark:focus:ring-emerald-800 dark:focus:ring-offset-zinc-800;
+}
+
+*,
+::after,
+::before {
+    @apply dark:border-zinc-600;
+}
+
+main {
+    @apply h-full overflow-y-auto dark:text-white;
+}
+
+main > div {
+    @apply mx-auto;
+}
+
+footer a,
+.link {
+    @apply text-zinc-800 dark:text-white border-b-2 border-dotted border-emerald-800;
+}
+
+footer a:hover,
+footer a:focus,
+footer a:active,
+.link:hover,
+.link:focus,
+.link:active {
+    @apply border-solid;
+}

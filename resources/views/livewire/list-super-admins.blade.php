@@ -23,7 +23,7 @@
             <x-table.row>
                 <x-table.cell>{{ $superadmin->cn[0] }}</x-table.cell>
                 <x-table.cell>{{ $superadmin->uid[0] }}</x-table.cell>
-                <x-table.cell>
+                <x-table.cell class="flex gap-2 float-right">
                     <x-button.link-danger wire:click="deletePrepare('{{ $superadmin->uid[0] }}')">{{ __('Delete') }}</x-button.link-danger>
                 </x-table.cell>
             </x-table.row>

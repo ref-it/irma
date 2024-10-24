@@ -19,8 +19,8 @@
             .cls-8{fill:url(#lingrad_196-6);}
         </style>
         <linearGradient id="lingrad" x1="117.35" y1="46.12" x2="382.58" y2="453.82" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#6366f1"/>
-            <stop offset="1" stop-color="#4338ca"/>
+            <stop offset="0" stop-color="#fbbf24"/>
+            <stop offset="1" stop-color="#f59e0b"/>
         </linearGradient>
         <linearGradient id="lingrad_196" x1="117.33" y1="187.05" x2="269.3" y2="428.16" gradientUnits="userSpaceOnUse">
             <stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#e6e6e6"/>
