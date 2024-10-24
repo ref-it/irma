@@ -97,6 +97,11 @@ Breadcrumbs::for('realms.groups.new', function (BreadcrumbTrail $trail, array $r
     $trail->push(__('New Group'), route('realms.groups.new', $routeParams));
 });
 
+Breadcrumbs::for('realms.groups.edit', function (BreadcrumbTrail $trail, array $routeParams) {
+    $trail->parent('realms.groups', $routeParams);
+    $trail->push(__('Edit'), route('realms.groups.edit', $routeParams));
+});
+
 Breadcrumbs::for('realms.groups.roles', function (BreadcrumbTrail $trail, array $routeParams) {
     $trail->parent('realms.groups', $routeParams);
     $name = $routeParams['cn'];
