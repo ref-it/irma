@@ -10,10 +10,10 @@ use Livewire\Component;
 
 class NewRealm extends Component
 {
-    #[Rule('required')]
+    #[Rule('required|alpha_dash:ascii')]
     public string $uid = "";
 
-    #[Rule('required|min:6')]
+    #[Rule('required|min:6|ascii')]
     public string $name = "";
 
 

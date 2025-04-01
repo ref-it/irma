@@ -61,7 +61,7 @@ class ListRealms extends Component
         } else {
             $memberships = $ldapUser->memberOf;
             $communityMemberships = \Arr::where($memberships, static function (string $value, int $key){
-                return preg_match('/^cn=members,ou=[A-Za-z_\-]+,' . Community::rootDn() . '$/', $value);
+                return preg_match('/^cn=members,ou=[0-9A-Za-z_\-]+,' . Community::rootDn() . '$/', $value);
             });
 
             $canEnter = \Arr::mapWithKeys($communityMemberships, static function (string $value) {
@@ -73,7 +73,6 @@ class ListRealms extends Component
                 $this->redirectRoute('realms.dashboard', ['uid' => \Arr::first(array_keys($canEnter))], navigate: true);
             }
         }
-
 
         return view('livewire.realm.list-communities', [
             'realmSlice' => $communitySlice,
