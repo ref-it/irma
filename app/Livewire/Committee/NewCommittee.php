@@ -31,7 +31,7 @@ class NewCommittee extends Component
     {
         return [
             'ou' => [
-                'alpha_dash',
+                'alpha_dash:ascii',
                 new UniqueCommittee($this->realm_uid)
             ]
         ];
