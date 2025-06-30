@@ -1,0 +1,4 @@
+[submodule "public/libs/cropperjs"]
+	path = public/libs/cropperjs
+	url = https://github.com/fengyuanchen/cropperjs.git
+	branch = v1
