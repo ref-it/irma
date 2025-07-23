@@ -134,8 +134,8 @@ Alpine.data('cropper', () => {
             this.file = null
             this.imageFile = null
             this.imageCropped = null
+            this.cropper.destroy()
             this.imageIsSelected = false
-            this.cropper = null
         },
     }
 })
