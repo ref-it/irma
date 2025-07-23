@@ -19,9 +19,11 @@ class SocialiteUser extends Controller
             'email' => $user->email,
             'picture' => $ldapUser->getFirstAttribute('jpegPhoto'),
             'iban' => null,
-            'street_address' => $ldapUser->getFirstAttribute('street'),
-            'postal_code' => $ldapUser->getFirstAttribute('postalCode'),
-            'locality' => $ldapUser->getFirstAttribute('l'),
+            'address' => json_encode([
+                'street_address' => $ldapUser->getFirstAttribute('street'),
+                'postal_code' => $ldapUser->getFirstAttribute('postalCode'),
+                'locality' => $ldapUser->getFirstAttribute('l'),
+            ]),
             'phone_number' => $ldapUser->getFirstAttribute('telephoneNumber'),
         ]);
     }
