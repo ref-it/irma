@@ -58,7 +58,7 @@ class Profile extends Component
     {
         $this->validate();
         if (Auth::user()->username !== $this->uid) {
-            abort('500');
+            abort('403');
         }
         $user = User::findOrFailByUsername($this->uid);
         $user->setAttribute('mail', $this->email);
