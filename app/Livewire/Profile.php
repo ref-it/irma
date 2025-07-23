@@ -29,7 +29,6 @@ class Profile extends Component
     public $postalCode;
     public $city;
     public $phone;
-    public $mobile;
     
     public $picture;
     public $pictureUrl;
@@ -47,7 +46,6 @@ class Profile extends Component
         $this->postalCode = $user->getFirstAttribute('postalCode');
         $this->city = $user->getFirstAttribute('l');
         $this->phone = $user->getFirstAttribute('telephoneNumber');
-        $this->mobile = $user->getFirstAttribute('mobile');
         $this->pictureUrl = $user->getFirstAttribute('jpegPhoto');
     }
 
@@ -72,7 +70,6 @@ class Profile extends Component
         $user->setAttribute('postalCode', $this->postalCode);
         $user->setAttribute('l', $this->city);
         $user->setAttribute('telephoneNumber', $this->phone);
-        $user->setAttribute('mobile', $this->mobile);
         $user->save();
         return redirect()->route('profile')->with('message', __('Saved'));
     }

@@ -29,7 +29,6 @@
         </div>
         <div class="grid lg:grid-cols-2 gap-4 mt-4">
             <x-input.group :label="__('Telefon')" wire:model.live="phone" />
-            <x-input.group :label="__('Mobiltelefon')" wire:model.live="mobile" />
         </div>
         <x-slot:abort_route>
             {{ url()->previous() }}
