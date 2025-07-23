@@ -106,7 +106,7 @@ class Profile extends Component
     public function deletePicture()
     {
         // Remove image from Laravel Storage
-        Storage::disk('public')->delete(str_replace(env('APP_URL') . '/storage/', '', $this->pictureUrl));
+        Storage::disk('public')->delete(str_replace(config('app.url') . '/storage/', '', $this->pictureUrl));
 
         // Remove image URL from LDAP
         $user = User::findOrFailByUsername($this->uid);
