@@ -76,11 +76,6 @@
     </div>
 </div>
 
-@assets
-<link rel="stylesheet" href="/libs/cropperjs/dist/cropper.min.css">
-<script src="/libs/cropperjs/dist/cropper.min.js"></script>
-@endassets
-
 @script
 <script>
 Alpine.data('cropper', () => {
