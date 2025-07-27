@@ -4,18 +4,18 @@ namespace App\Livewire\Profile;
 
 use App\Ldap\User;
 use App\Ldap\Role;
-use Livewire\Component;
-
 use App\Models\RoleMembership;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Livewire\Component;
 
 class Memberships extends Component
 {
-    public $showOnlyActive = true;
+    public bool $showOnlyActive = true;
 
-    public function render()
+    public function getMemberships(bool $onlyActive)
     {
         $query = RoleMembership::where('username', auth()->user()->username);
-        if ($this->showOnlyActive) {
+        if ($onlyActive) {
             $query->whereNull('until');
         }
         $roleMemberships = $query->get();
@@ -30,9 +30,28 @@ class Memberships extends Component
                 'comment' => $row->comment,
             ]);
         }
+        return $memberships;
+    }
+
+    public function render()
+    {
+        $memberships = $this->getMemberships($this->showOnlyActive);
 
         return view('livewire.profile.memberships', [
             'memberships' => $memberships,
         ])->title(__('Profile'));
+    }
+
+    public function exportPdf()
+    {
+        $memberships = $this->getMemberships(false);
+        $pdf = Pdf::loadView('pdfs.memberships', [
+            'fullName' => auth()->user()->full_name,
+            'memberships' => $memberships,
+        ]);
+
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'memberships-' . auth()->user()->username . '.pdf');;
     }
 }
