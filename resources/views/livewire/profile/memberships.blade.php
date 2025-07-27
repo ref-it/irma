@@ -8,7 +8,8 @@
     
     <div>
         <div class="mt-6 mb-6">
-            <input id="showOnlyAcitve" type="checkbox" wire:model.change="showOnlyActive" class="rounded-sm border-indigo-400"><label for="showOnlyActive" class="ml-4">{{ __('profile.showOnlyActiveMemberships') }}</label>
+            <input id="showOnlyActive" type="checkbox" wire:model.change="showOnlyActive" class="rounded-sm border-indigo-400">
+            <label for="showOnlyActive" class="ml-4">{{ __('profile.showOnlyActiveMemberships') }}</label>
         </div>
         <x-table>
             <x-slot name="head">
