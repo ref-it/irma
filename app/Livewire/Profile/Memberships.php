@@ -10,11 +10,21 @@ use Livewire\Component;
 
 class Memberships extends Component
 {
+    public $currentUsername;
     public bool $showOnlyActive = true;
 
-    public function getMemberships(bool $onlyActive)
+    public function mount($username)
     {
-        $query = RoleMembership::where('username', auth()->user()->username);
+        if ($username != "") {
+            $this->currentUsername = $username;
+        } else {
+            $this->currentUsername = auth()->user()->username;
+        }
+    }
+
+    public function getMemberships(string $username, bool $onlyActive)
+    {
+        $query = RoleMembership::where('username', $username);
         if ($onlyActive) {
             $query->whereNull('until');
         }
@@ -35,7 +45,7 @@ class Memberships extends Component
 
     public function render()
     {
-        $memberships = $this->getMemberships($this->showOnlyActive);
+        $memberships = $this->getMemberships($this->currentUsername, $this->showOnlyActive);
 
         return view('livewire.profile.memberships', [
             'memberships' => $memberships,
@@ -44,14 +54,16 @@ class Memberships extends Component
 
     public function exportPdf()
     {
-        $memberships = $this->getMemberships(false);
+        $memberships = $this->getMemberships($this->currentUsername, false);
+        $user = User::findOrFailByUsername($this->currentUsername);
         $pdf = Pdf::loadView('pdfs.memberships', [
-            'fullName' => auth()->user()->full_name,
+            'fullName' => $user->cn[0],
+            'community' => null,
             'memberships' => $memberships,
         ]);
 
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
-        }, 'memberships-' . auth()->user()->username . '.pdf');;
+        }, 'memberships-' . $this->currentUsername . '.pdf');;
     }
 }

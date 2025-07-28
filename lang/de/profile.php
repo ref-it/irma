@@ -2,6 +2,7 @@
 
 return [
     'activity' => 'Tätigkeit',
+    'activities' => 'Tätigkeiten',
     'comment' => 'Bemerkung',
     'committee' => 'Gremium',
     'decision' => 'Beschluss',
@@ -9,6 +10,7 @@ return [
     'from' => 'von',
     'in' => 'in',
     'memberships' => 'Mitgliedschaften',
+    'membershipsAsPdf' => 'Mitgliedschaften als PDF',
     'role' => 'Rolle',
     'showOnlyActiveMemberships' => 'Zeige nur aktive Mitgliedschaften',
     'today' => 'heute',
