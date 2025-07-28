@@ -32,7 +32,15 @@
         </x-slot>
         @forelse($realm_members as $realm_member)
             <x-table.row>
-                <x-table.cell>{{ $realm_member->cn[0] }}</x-table.cell>
+                <x-table.cell>
+                    @if (auth()->user()->can('superadmin', \App\Ldap\User::class))
+                    <a wire:navigate href="{{ route('profile', ['username' => $realm_member->uid[0]]) }}">
+                        {{ $realm_member->cn[0] }}
+                    </a>
+                    @else
+                    {{ $realm_member->cn[0] }}
+                    @endif
+                </x-table.cell>
                 <x-table.cell>{{ $realm_member->uid[0] }}</x-table.cell>
                 <x-table.cell>
                     <div class="flex gap-3">
