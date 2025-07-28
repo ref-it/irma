@@ -36,7 +36,13 @@
                 <x-table.cell>{{ $realm_member->uid[0] }}</x-table.cell>
                 <x-table.cell>
                     <div class="flex gap-3">
-                        <x-button.link-primary wire:click="exportPdf('{{ $realm_member->uid[0] }}')" class="ml-auto">{{ __('profile.membershipsAsPdf') }}</x-button.link-primary>
+                        <x-button.link-primary
+                            wire:click="exportPdf('{{ $realm_member->uid[0] }}')"
+                            :disabled="auth()->user()->cannot('edit', $community)"
+                            class="ml-auto"
+                        >
+                            {{ __('profile.membershipsAsPdf') }}
+                        </x-button.link-primary>
                         <x-button.link-danger
                             icon-leading="fas-triangle-exclamation"
                             :disabled="auth()->user()->cannot('remove_member', $community)"

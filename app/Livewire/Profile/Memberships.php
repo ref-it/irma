@@ -15,10 +15,12 @@ class Memberships extends Component
 
     public function mount($username)
     {
-        if ($username != "") {
+        if ($username == auth()->user()->username || auth()->user()->can('superadmin', User::class)) {
             $this->currentUsername = $username;
-        } else {
+        } elseif ($username == auth()->user()->username) {
             $this->currentUsername = auth()->user()->username;
+        } else {
+            abort('403');
         }
     }
 
