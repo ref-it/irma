@@ -89,8 +89,8 @@
     </head>
 
     <body>
-        <h1>{{ __('profile.memberships') }}</h1>
-        <p class="mb-6">{{ $fullName }} | {{ date("Y-m-d") }}</p>
+        <h1>{{ __('profile.activities') }}</h1>
+        <p class="mb-6">{{ $fullName }} @if($community)| {{ $community }} @endif| {{ date("Y-m-d") }}</p>
 
         <table class="table">
             <thead>
