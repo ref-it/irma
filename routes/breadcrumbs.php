@@ -29,7 +29,7 @@ Breadcrumbs::for('realms.dashboard', function (BreadcrumbTrail $trail, array $ro
 });
 
 Breadcrumbs::for('profile', function (BreadcrumbTrail $trail, array $routeParams) {
-    $trail->push(__('Profile'), route('profile', $routeParams));
+    $trail->push(__('Profile'), route('profile', array_merge(['username' => auth()->user()->username], $routeParams)));
 });
 
 Breadcrumbs::for('profile.memberships', function (BreadcrumbTrail $trail, array $routeParams) {

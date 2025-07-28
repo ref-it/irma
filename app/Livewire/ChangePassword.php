@@ -18,6 +18,17 @@ class ChangePassword extends Component
 
     public string $password_confirmation;
 
+    public $currentUsername;
+
+    public function mount($username)
+    {
+       if ($username != "") {
+            $this->currentUsername = $username;
+        } else {
+            $this->currentUsername = auth()->user()->username;
+        } 
+    }
+
     public function rules(): array
     {
         return [
