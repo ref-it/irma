@@ -20,7 +20,10 @@
         <x-table>
             <x-slot name="head">
                 <x-table.heading>
-                    {{ __('profile.activity') }}
+                    {{ __('profile.role') }}
+                </x-table.heading>
+                <x-table.heading>
+                    {{ __('profile.committee') }}
                 </x-table.heading>
                 <x-table.heading>
                     {{ __('profile.from') }}
@@ -38,7 +41,10 @@
             @forelse($memberships as $row)
                 <x-table.row>
                     <x-table.cell>
-                        <strong class="font-semibold">{{ $row['role']->getFirstAttribute('description') }}</strong> {{ __('profile.in') }} <strong class="font-semibold">{{ $row['role']->committee()->getFirstAttribute('description') }}</strong>
+                        {{ $row['role']->getFirstAttribute('description') }}
+                    </x-table.cell>
+                    <x-table.cell>
+                        {{ $row['role']->committee()->getFirstAttribute('description') }}
                     </x-table.cell>
                     <x-table.cell>
                         {{ \Carbon\Carbon::parse($row['from'])->format('Y-m-d') }}
